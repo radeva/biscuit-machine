@@ -1,0 +1,76 @@
+.left{
+    float:left
+}
+
+.right {
+    float:right;
+}
+
+.bottom-container {
+    width: 600px;
+    margin: auto;
+}
+
+/* Conveyor */
+.path {
+    stroke-dasharray: 20;
+    animation: conveyor 5s linear infinite;
+}
+
+/* Oven */
+.oven {
+    margin-bottom: 50px;
+    padding: 10px;
+    border: 1px solid grey;
+    margin: auto;
+    width: 180px;
+    height: 80px;
+    margin-bottom: 100px;
+}
+
+.oven-light {
+    font-size: 200%;
+    text-align: center;
+    margin-left: 10px;
+}
+
+.oven-light-off {
+    color: grey;
+}
+
+.oven-light-on {
+    color: orange;
+}
+
+/* Switch */
+.switch-container {
+    margin-top: 20px;
+}
+
+.switch-button {
+    padding: 10px;
+    margin-right: 2px;
+}
+
+.switch-button-active{
+    background-color: red;
+    color: white;
+}
+
+/* Motor */
+
+.motor{
+    margin-top: 20px;
+}
+
+.motor-on {
+    animation: motorrotation 2s linear infinite;
+}
+@keyframes motorrotation {
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
