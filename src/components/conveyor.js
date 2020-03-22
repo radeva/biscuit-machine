@@ -21,7 +21,7 @@ export default class Conveyor extends React.Component {
         if(this.props.isOn){
             conveyorElement = <ConveyorSVGOn />;
         }
-        console.log(conveyorElement);
+        
         return (
             <div className="conveyor">
                 {conveyorElement}

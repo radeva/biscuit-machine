@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactInterval from 'react-interval';
+import BakeBiscuitInterval from './bake-biscuit-interval';
 
 const 
     OVEN_MIN_TEMPERATURE = 220,
@@ -89,6 +90,7 @@ export default class Oven extends React.Component {
         const {temperature} = this.state;
         if(temperature === INITIAL_TEMPERATURE) {
             this.setState({enabled: false});
+            // TODO DIsable baking interval
             return;
         }
         this.setState({temperature: temperature - HEAT_OVEN_STEP});
@@ -97,7 +99,7 @@ export default class Oven extends React.Component {
     calculateTemperatureUp() {
         const {temperature} = this.state;
         if(temperature === OVEN_MIN_TEMPERATURE) {
-            this.props.handleOvenHeatedEnough();
+            this.props.onOvenHeatedEnough();
             this.warmup();
         }
         this.setState({temperature: temperature + HEAT_OVEN_STEP});
@@ -109,13 +111,14 @@ export default class Oven extends React.Component {
             ovenLightClassName += ' ' + ovenLightClassName + '-on';
         }
 
+        console.log('hasBiscuitsToBake = ', this.props.hasBiscuitsToBake);
         const {timeout, enabled, callback} = this.state;
 
         return (
-            <div className='oven' >
+            <div className='oven right' >
                 <label>GORENJE</label><span className={ovenLightClassName}>&#8226;</span><br />
                 <label>{this.state.temperature}<span>&#8451;</span></label>
-                
+                <BakeBiscuitInterval hasBiscuitsToBake={this.props.hasBiscuitsToBake} onBiscuitBaked={this.props.onBiscuitBaked}/>
                 <ReactInterval {...{timeout, enabled, callback}} />
             </div>
         );
