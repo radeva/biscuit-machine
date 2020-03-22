@@ -6,9 +6,9 @@ const
     OVEN_MAX_TEMPERATURE = 240,
     HEAT_OVEN_STEP = 2,
     HEAT_OVEN_INTERVAL_IN_SECONDS = 100,
-    COOLDOWN_OVEN_INTERVAL_IN_SECONDS = 5000,
+    COOLDOWN_OVEN_INTERVAL_IN_SECONDS = 3000,
     COOLDOWN_OVEN_STEP = 2,
-    WARMUP_OVEN_INTERVAL_IN_SECONDS = 5000,
+    WARMUP_OVEN_INTERVAL_IN_SECONDS = 3000,
     WARMUP_OVEN_STEP = 2,
     INITIAL_TEMPERATURE = 40;
 
@@ -33,19 +33,29 @@ export default class Oven extends React.Component {
         }
     }
 
-
     startHeating() {
         this.setState({heatingStarted: true, enabled: true});
     }
 
     cooldown() {
-        console.log('in cooldown');
         this.setState({
             timeout: COOLDOWN_OVEN_INTERVAL_IN_SECONDS, 
             callback: this.startCooldown
         });
+    }
 
-        // cooldown to 220 & warmup then
+    warmup() {
+        if(this.props.isOn) {
+            this.setState({
+                timeout: WARMUP_OVEN_INTERVAL_IN_SECONDS, 
+                callback: this.startWarmup
+            });
+        }else {
+            this.setState({
+                timeout: HEAT_OVEN_INTERVAL_IN_SECONDS, 
+                callback: this.calculateTemperature
+            });
+        }
     }
 
     startCooldown = () => {
@@ -59,37 +69,43 @@ export default class Oven extends React.Component {
 
     startWarmup = () => {
         const {temperature} = this.state;
-        if(temperature === OVEN_MAX_TEMPERATURE) {
+ 
+        if(!this.props.isOn || (this.props.isOn && temperature === OVEN_MAX_TEMPERATURE)) {
             this.cooldown();
         } else {
             this.setState({temperature: temperature + WARMUP_OVEN_STEP});
         }
     }
 
-    warmup() {
-        this.setState({
-            timeout: WARMUP_OVEN_INTERVAL_IN_SECONDS, 
-            callback: this.startWarmup
-        });
+    calculateTemperature = () => {
+        if(this.props.isOn) {
+            this.calculateTemperatureUp();  
+        } else {
+            this.calculateTemperatureDown();
+        }
     }
 
-    calculateTemperature = () => {
+    calculateTemperatureDown() {
+        const {temperature} = this.state;
+        if(temperature === INITIAL_TEMPERATURE) {
+            this.setState({enabled: false});
+            return;
+        }
+        this.setState({temperature: temperature - HEAT_OVEN_STEP});
+    }
+
+    calculateTemperatureUp() {
         const {temperature} = this.state;
         if(temperature === OVEN_MIN_TEMPERATURE) {
             this.props.handleOvenHeatedEnough();
+            this.warmup();
         }
-
-        if(temperature === OVEN_MAX_TEMPERATURE) {
-            this.cooldown();
-        } else {
-            this.setState({temperature: temperature + HEAT_OVEN_STEP});
-        }
+        this.setState({temperature: temperature + HEAT_OVEN_STEP});
     }
 
     render() {
         let ovenLightClassName = 'oven-light';
-        const isOvenOn = this.props.isOn;
-        if(isOvenOn){
+        if(this.props.isOn){
             ovenLightClassName += ' ' + ovenLightClassName + '-on';
         }
 

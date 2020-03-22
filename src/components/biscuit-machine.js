@@ -27,7 +27,7 @@ export default class BiscuitMachine extends React.Component {
                 this.setState({isOvenOn: true});
                 break;
             case SWITCH_STATES.OFF:
-                this.setState({isOvenOn: false});
+                this.setState({isOvenOn: false, isMotorOn: false, isConveyorOn: false});
                 break;
             case SWITCH_STATES.PAUSE:
                 break;

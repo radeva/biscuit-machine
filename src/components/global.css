@@ -14,7 +14,6 @@
 /* Conveyor */
 .path {
     stroke-dasharray: 20;
-    animation: conveyor 5s linear infinite;
 }
 
 /* Oven */
@@ -66,6 +65,7 @@
 .motor-on {
     animation: motorrotation 2s linear infinite;
 }
+
 @keyframes motorrotation {
     from{
         transform: rotate(0deg);
