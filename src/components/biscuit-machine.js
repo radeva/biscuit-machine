@@ -7,11 +7,8 @@ import Extruder from './extruder';
 import Stamper from './stamper';
 import './global.css';
 
-const MOTOR_PULSES_PER_REVOLUTION = 1;
-
 export default class BiscuitMachine extends React.Component {
-    
-    
+
     constructor(props) {
         super(props);
         this.state = {
@@ -19,7 +16,8 @@ export default class BiscuitMachine extends React.Component {
             isOvenOn: false,
             isMotorOn: false,
             isConveyorOn: false,
-            pulsesCount: 0,
+            extruderPulsesCount: 0,
+            stamperPulsesCount: 0,
             biscuitsToStampCount: 0,
             biscuitsToBakeCount: 0,
             biscuitsBakedCount: 0
@@ -57,42 +55,38 @@ export default class BiscuitMachine extends React.Component {
 
     handleMotorPulse() {
         this.setState((state, props) => {
-            return {pulsesCount: state.pulsesCount + MOTOR_PULSES_PER_REVOLUTION};
+            return {
+                extruderPulsesCount: state.extruderPulsesCount + 1,
+                stamperPulsesCount: state.stamperPulsesCount + 1};
         });
+
+        // TODO: Call Extruder here
     }
 
     handlePulseUsedByExtruder() {
-        console.log('handle pulse by extruder');
         this.setState((state, props) => {
-            let newPulsesCount = state.pulsesCount;
-            if(state.pulsesCount > 0) {
-                newPulsesCount--;
-            }
-
             return {
-                pulsesCount: newPulsesCount, 
+                extruderPulsesCount: state.extruderPulsesCount - 1, 
                 biscuitsToStampCount: state.biscuitsToStampCount + 1
             };
         });
+
+        // TODO: Call Stamper here
     }
 
     handlePulseUsedByStamper() {
         this.setState((state, props) => {
-            let newPulsesCount = state.pulsesCount;
-            if(state.pulsesCount > 0) {
-                newPulsesCount--;
-            }
-            
             return {
-                pulsesCount: newPulsesCount, 
+                stamperPulsesCount: state.stamperPulsesCount - 1, 
                 biscuitsToStampCount: state.biscuitsToStampCount - 1,
                 biscuitsToBakeCount: state.biscuitsToBakeCount + 1
             };
         });
+
+        // TODO: Call Baking here
     }
 
     handleBiscuitBaked() {
-        console.log('in handle biscuitbaked');
         this.setState((state, props) => {
             if(state.biscuitsToBakeCount > 0) {
                 return {
@@ -106,9 +100,13 @@ export default class BiscuitMachine extends React.Component {
     }
 
     render() {
-        let hasPulses = this.state.pulsesCount > 0;
         let hasBiscuitsToStamp = this.state.biscuitsToStampCount > 0;
         let hasBiscuitsToBake = this.state.biscuitsToBakeCount > 0;
+
+        let shouldExtruderUsePulse = this.state.extruderPulsesCount > 0 && !hasBiscuitsToStamp;
+        let shouldStamperUsePulse = this.state.stamperPulsesCount > 0 && hasBiscuitsToStamp;
+
+        console.log('render', this.state.extruderPulsesCount, this.state.stamperPulsesCount, hasBiscuitsToStamp);
 
         return (
             <div className='container'>
@@ -116,13 +114,11 @@ export default class BiscuitMachine extends React.Component {
                 <div>
                     <Extruder 
                         onPulseUsed={this.handlePulseUsedByExtruder} 
-                        hasPulses={hasPulses} 
-                        hasBiscuitsToStamp={hasBiscuitsToStamp} 
+                        shouldUsePulse={shouldExtruderUsePulse} 
                     />
                     <Stamper 
                         onPulseUsed={this.handlePulseUsedByStamper} 
-                        hasPulses={hasPulses} 
-                        hasBiscuitsToStamp={hasBiscuitsToStamp} 
+                        shouldUsePulse={shouldStamperUsePulse} 
                     />
                     <Oven 
                         isOn={this.state.isOvenOn} 
@@ -135,14 +131,17 @@ export default class BiscuitMachine extends React.Component {
                 <div>
                     <div className='left'>
                         <Motor isOn={this.state.isMotorOn} onSendPulse={this.handleMotorPulse}/>
-                        <div>Pulses: {this.state.pulsesCount}</div>
-                        <div>Biscuits to stamp: {this.state.biscuitsToStampCount}</div>
-                        <div>Biscuits to bake: {this.state.biscuitsToBakeCount}</div>
-                        <div>Biscuits baked: {this.state.biscuitsBakedCount}</div>
                     </div>
                     <div className='right'>
                         <Switch onSwitchClick={this.handleSwitchClick} switchState={this.state.switchState}/>
                     </div>
+                </div>
+                <div className='stats'>
+                    <h2>Stats</h2>
+                    <div>Pulses: {this.state.pulsesCount}</div>
+                    <div>Biscuits to stamp: {this.state.biscuitsToStampCount}</div>
+                    <div>Biscuits to bake: {this.state.biscuitsToBakeCount}</div>
+                    <div>Biscuits baked: {this.state.biscuitsBakedCount}</div>
                 </div>
             </div>
         )

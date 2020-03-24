@@ -24,7 +24,8 @@ export default class Oven extends React.Component {
             callback: this.calculateTemperature,
             heatingStarted: false,
             enabled: false,
-            timeout: HEAT_OVEN_INTERVAL_IN_SECONDS
+            timeout: HEAT_OVEN_INTERVAL_IN_SECONDS,
+            bakingEnabled: false
         }
     }
 
@@ -90,7 +91,6 @@ export default class Oven extends React.Component {
         const {temperature} = this.state;
         if(temperature === INITIAL_TEMPERATURE) {
             this.setState({enabled: false});
-            // TODO DIsable baking interval
             return;
         }
         this.setState({temperature: temperature - HEAT_OVEN_STEP});
@@ -98,27 +98,29 @@ export default class Oven extends React.Component {
 
     calculateTemperatureUp() {
         const {temperature} = this.state;
+        let bakingEnabled = false;
         if(temperature === OVEN_MIN_TEMPERATURE) {
             this.props.onOvenHeatedEnough();
+            bakingEnabled = true;
             this.warmup();
         }
-        this.setState({temperature: temperature + HEAT_OVEN_STEP});
+        this.setState({temperature: temperature + HEAT_OVEN_STEP, bakingEnabled: bakingEnabled});
     }
 
     render() {
         let ovenLightClassName = 'oven-light';
-        if(this.props.isOn){
+        let isOvenOn = this.props.isOn;
+        if(isOvenOn){
             ovenLightClassName += ' ' + ovenLightClassName + '-on';
         }
 
-        console.log('hasBiscuitsToBake = ', this.props.hasBiscuitsToBake);
         const {timeout, enabled, callback} = this.state;
 
         return (
             <div className='oven right' >
                 <label>GORENJE</label><span className={ovenLightClassName}>&#8226;</span><br />
                 <label>{this.state.temperature}<span>&#8451;</span></label>
-                <BakeBiscuitInterval hasBiscuitsToBake={this.props.hasBiscuitsToBake} onBiscuitBaked={this.props.onBiscuitBaked}/>
+                <BakeBiscuitInterval isEnabled={this.state.bakingEnabled} isOvenOn={isOvenOn} hasBiscuitsToBake={this.props.hasBiscuitsToBake} onBiscuitBaked={this.props.onBiscuitBaked}/>
                 <ReactInterval {...{timeout, enabled, callback}} />
             </div>
         );

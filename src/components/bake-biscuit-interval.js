@@ -5,16 +5,34 @@ export default class BakeBiscuitInterval extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            timeout: 2200,
-            enabled: true,
+            timeout: 3800,
+            enabled: false,
             callback: this.bakeBiscuit
         }
     }
 
+    componentDidUpdate() {
+        if(this.props.isOvenOn && this.props.hasBiscuitsToBake && !this.state.enabled){
+            this.startBaking();
+        }
+    }
+
+    startBaking() {
+        this.setState({enabled: true});
+    }
+
+    stopBaking() {
+        this.setState({enabled: false});
+    }
+
     bakeBiscuit = () => {
-        console.log('bake biscuit');
+        console.log('bake biscuits');
         if(this.props.hasBiscuitsToBake) {
             this.props.onBiscuitBaked();
+        }else{
+            if(!this.props.isOvenOn) {
+                this.stopBaking()
+            }
         }
     }
     
