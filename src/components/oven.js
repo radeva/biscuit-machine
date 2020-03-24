@@ -100,7 +100,7 @@ export default class Oven extends React.Component {
         const {temperature} = this.state;
         let bakingEnabled = false;
         if(temperature === OVEN_MIN_TEMPERATURE) {
-            this.props.onOvenHeatedEnough();
+            this.props.onStartBaking();
             bakingEnabled = true;
             this.warmup();
         }

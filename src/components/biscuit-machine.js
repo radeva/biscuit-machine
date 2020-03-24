@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useReducer} from 'react';
 import Switch, {SWITCH_STATES} from './switch';
 import Oven from './oven';
 import Conveyor from './conveyor';
@@ -7,143 +7,147 @@ import Extruder from './extruder';
 import Stamper from './stamper';
 import './global.css';
 
-export default class BiscuitMachine extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            switchState: SWITCH_STATES.OFF,
+const initialState = {
+    switchState: SWITCH_STATES.OFF,
+    isOvenOn: false,
+    isMotorOn: false,
+    isConveyorOn: false,
+    pulsesCount: 0,
+    totalPulsesReleased: 0,
+    biscuitsToStampCount: 0,
+    biscuitsToBakeCount: 0,
+    biscuitsBakedCount: 0
+};
+
+const actionTypes = {
+    turnSwitchOn: 'turnSwitchOn',
+    pauseSwitch: 'pauseSwitch',
+    turnSwitchOff: 'turnSwitchOff',
+    startBaking: 'heatOvenEnough',
+    releaseMotorPulses: 'releaseMotorPulses',
+    usePulseByExtruder: 'usePulseByExtruder',
+    usePulseByStamper: 'usePulseByStamper',
+    bakeBiscuit: 'bakeBiscuit'
+}
+
+function reducer(state, action) {
+
+    console.log(action, state);
+
+  switch (action.type) {
+    case actionTypes.turnSwitchOn:
+        return {
+            ...state,
+            isOvenOn: true, 
+            switchState: SWITCH_STATES.ON
+        };
+    case actionTypes.turnSwitchOff:
+        return {
+            ...state,
             isOvenOn: false,
             isMotorOn: false,
             isConveyorOn: false,
-            extruderPulsesCount: 0,
-            stamperPulsesCount: 0,
-            biscuitsToStampCount: 0,
-            biscuitsToBakeCount: 0,
-            biscuitsBakedCount: 0
+            switchState: SWITCH_STATES.OFF
+        }
+    case actionTypes.startBaking:
+        return {
+            ...state, 
+            isMotorOn: true, 
+            isConveyorOn: true
         };
+    case actionTypes.releaseMotorPulses:
+        return {
+            ...state,
+            pulsesCount: state.pulsesCount + 1,
+            totalPulsesReleased: state.totalPulsesReleased + 1,
+        }
+    case actionTypes.usePulseByExtruder:
+        return {
+            ...state,
+            pulsesCount: state.pulsesCount - 1,
+            biscuitsToStampCount: state.biscuitsToStampCount + 1
+        };
+    case actionTypes.usePulseByStamper:
+        return {
+            ...state,
+            pulsesCount: state.pulsesCount - 1,
+            biscuitsToStampCount: state.biscuitsToStampCount - 1,
+            biscuitsToBakeCount: state.biscuitsToBakeCount + 1
+        };
+    case actionTypes.bakeBiscuit:
+        return {
+            ...state,
+            biscuitsToBakeCount: state.biscuitsToBakeCount - 1,
+            biscuitsBakedCount: state.biscuitsBakedCount + 1
+        };
+    default:
+      throw new Error(); // TODO
+  }
+}
 
-        this.handleSwitchClick = this.handleSwitchClick.bind(this);
-        this.handleOvenHeatedEnough = this.handleOvenHeatedEnough.bind(this);
-        this.handleMotorPulse = this.handleMotorPulse.bind(this);
-        this.handlePulseUsedByExtruder = this.handlePulseUsedByExtruder.bind(this);
-        this.handlePulseUsedByStamper = this.handlePulseUsedByStamper.bind(this);
-        this.handleBiscuitBaked = this.handleBiscuitBaked.bind(this);
-    }
+export default function BiscuitMachine(props){
 
-    handleSwitchClick(switchState) {
-        this.setState({switchState: switchState});
-        
+    const [state, dispatch] = useReducer(reducer, initialState);
+    
+    const handleSwitchClick = (switchState) => {
         switch(switchState) {
             case SWITCH_STATES.ON:
-                this.setState({isOvenOn: true});
+                dispatch({type: actionTypes.turnSwitchOn});
                 break;
             case SWITCH_STATES.OFF:
-                this.setState({isOvenOn: false, isMotorOn: false, isConveyorOn: false});
+                dispatch({type: actionTypes.turnSwitchOff});
                 break;
             case SWITCH_STATES.PAUSE:
                 break;
         }
-    }
+    };
 
-    handleOvenHeatedEnough() {
-        this.setState({ 
-            isMotorOn: true, 
-            isConveyorOn: true
-        });
-    }
+    const hasBiscuitsToStamp = state.biscuitsToStampCount > 0;
+    const hasBiscuitsToBake = state.biscuitsToBakeCount > 0;
 
-    handleMotorPulse() {
-        this.setState((state, props) => {
-            return {
-                extruderPulsesCount: state.extruderPulsesCount + 1,
-                stamperPulsesCount: state.stamperPulsesCount + 1};
-        });
-
-        // TODO: Call Extruder here
-    }
-
-    handlePulseUsedByExtruder() {
-        this.setState((state, props) => {
-            return {
-                extruderPulsesCount: state.extruderPulsesCount - 1, 
-                biscuitsToStampCount: state.biscuitsToStampCount + 1
-            };
-        });
-
-        // TODO: Call Stamper here
-    }
-
-    handlePulseUsedByStamper() {
-        this.setState((state, props) => {
-            return {
-                stamperPulsesCount: state.stamperPulsesCount - 1, 
-                biscuitsToStampCount: state.biscuitsToStampCount - 1,
-                biscuitsToBakeCount: state.biscuitsToBakeCount + 1
-            };
-        });
-
-        // TODO: Call Baking here
-    }
-
-    handleBiscuitBaked() {
-        this.setState((state, props) => {
-            if(state.biscuitsToBakeCount > 0) {
-                return {
-                    biscuitsToBakeCount: state.biscuitsToBakeCount - 1,
-                    biscuitsBakedCount: state.biscuitsBakedCount + 1
-                };
-            }
-            
-            return {};
-        });
-    }
-
-    render() {
-        let hasBiscuitsToStamp = this.state.biscuitsToStampCount > 0;
-        let hasBiscuitsToBake = this.state.biscuitsToBakeCount > 0;
-
-        let shouldExtruderUsePulse = this.state.extruderPulsesCount > 0 && !hasBiscuitsToStamp;
-        let shouldStamperUsePulse = this.state.stamperPulsesCount > 0 && hasBiscuitsToStamp;
-
-        console.log('render', this.state.extruderPulsesCount, this.state.stamperPulsesCount, hasBiscuitsToStamp);
-
-        return (
-            <div className='container'>
-                <h1>BISCUIT MACHINE</h1>
-                <div>
-                    <Extruder 
-                        onPulseUsed={this.handlePulseUsedByExtruder} 
-                        shouldUsePulse={shouldExtruderUsePulse} 
-                    />
-                    <Stamper 
-                        onPulseUsed={this.handlePulseUsedByStamper} 
-                        shouldUsePulse={shouldStamperUsePulse} 
-                    />
-                    <Oven 
-                        isOn={this.state.isOvenOn} 
-                        onOvenHeatedEnough={this.handleOvenHeatedEnough}
-                        hasBiscuitsToBake={hasBiscuitsToBake}
-                        onBiscuitBaked={this.handleBiscuitBaked}
+    const shouldExtruderUsePulse = state.pulsesCount > 0 && !hasBiscuitsToStamp;
+    const shouldStamperUsePulse = state.pulsesCount > 0 && hasBiscuitsToStamp;
+    
+    return (
+        <div className='container'>
+            <h1>BISCUIT MACHINE</h1>
+            <div>
+                <Extruder 
+                    onPulseUsed={() => dispatch({type: actionTypes.usePulseByExtruder})} 
+                    shouldUsePulse={shouldExtruderUsePulse} 
+                />
+                <Stamper 
+                    onPulseUsed={() => dispatch({type: actionTypes.usePulseByStamper})}
+                    shouldUsePulse={shouldStamperUsePulse} 
+                />
+                <Oven 
+                    isOn={state.isOvenOn} 
+                    onStartBaking={() => dispatch({type: actionTypes.startBaking})}
+                    hasBiscuitsToBake={hasBiscuitsToBake}
+                    onBiscuitBaked={() => dispatch({type: actionTypes.bakeBiscuit})}
+                />
+            </div>
+            <Conveyor isOn={state.isConveyorOn}/>
+            <div>
+                <div className='left'>
+                    <Motor 
+                        isOn={state.isMotorOn} 
+                        onSendPulse={() => dispatch({type: actionTypes.releaseMotorPulses})}
                     />
                 </div>
-                <Conveyor isOn={this.state.isConveyorOn}/>
-                <div>
-                    <div className='left'>
-                        <Motor isOn={this.state.isMotorOn} onSendPulse={this.handleMotorPulse}/>
-                    </div>
-                    <div className='right'>
-                        <Switch onSwitchClick={this.handleSwitchClick} switchState={this.state.switchState}/>
-                    </div>
-                </div>
-                <div className='stats'>
-                    <h2>Stats</h2>
-                    <div>Pulses: {this.state.pulsesCount}</div>
-                    <div>Biscuits to stamp: {this.state.biscuitsToStampCount}</div>
-                    <div>Biscuits to bake: {this.state.biscuitsToBakeCount}</div>
-                    <div>Biscuits baked: {this.state.biscuitsBakedCount}</div>
+                <div className='right'>
+                    <Switch onSwitchClick={handleSwitchClick} switchState={state.switchState}/>
                 </div>
             </div>
-        )
-    }
+            <div className='stats'>
+                <h2>Stats</h2>
+                <div>Total pulses released: {state.totalPulsesReleased}</div>
+                <div>Pulses: {state.pulsesCount}</div>
+                <div>Biscuits to stamp: {state.biscuitsToStampCount}</div>
+                <div>Biscuits to bake: {state.biscuitsToBakeCount}</div>
+                <div>Biscuits baked: {state.biscuitsBakedCount}</div>
+            </div>
+        </div>
+    )
 }
