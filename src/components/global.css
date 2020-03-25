@@ -87,4 +87,18 @@
 .stats {
     clear:both;
     text-align: left;
+    float: left;
+}
+
+.biscuits-container{
+    float: right;
+}
+ul.biscuits-list li{
+    float:left;
+    list-style: none;
+    margin-right: 10px;
+}
+
+ul.biscuits-list li:nth-child(5n){
+    clear:left;
 }

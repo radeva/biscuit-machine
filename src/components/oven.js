@@ -31,6 +31,11 @@ export default class Oven extends React.Component {
         if(this.props.isOn && !this.state.heatingStarted){
             this.startHeating();
         }
+
+        if(this.props.hasBiscuitsToBake){
+            this.props.onBakeBiscuitInProgress();
+            setTimeout(this.props.onBakeBiscuitDone, 3000);
+        }
     }
 
     startHeating() {
@@ -113,12 +118,22 @@ export default class Oven extends React.Component {
         }
 
         const {timeout, enabled, callback} = this.state;
-
+        let biscuitElement = '';
+        if(this.props.shouldShowBiscuitInOven) {
+            biscuitElement=<div>oOo</div>;
+        }
         return (
             <div className='oven right' >
                 <label>GORENJE</label><span className={ovenLightClassName}>&#8226;</span><br />
                 <label>{this.state.temperature}<span>&#8451;</span></label>
-                <BakeBiscuitInterval isEnabled={this.state.bakingEnabled} isOvenOn={isOvenOn} hasBiscuitsToBake={this.props.hasBiscuitsToBake} onBiscuitBaked={this.props.onBiscuitBaked}/>
+                {biscuitElement}
+                {/* <BakeBiscuitInterval 
+                    isEnabled={this.state.bakingEnabled} 
+                    isOvenOn={isOvenOn} 
+                    hasBiscuitsToBake={this.props.hasBiscuitsToBake} 
+                    onBiscuitBaked={this.props.onBiscuitBaked}
+                    onBakeBiscuitInProgress={this.props.onBakeBiscuitInProgress}
+                    /> */}
                 <ReactInterval {...{timeout, enabled, callback}} />
             </div>
         );

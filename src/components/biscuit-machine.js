@@ -11,13 +11,14 @@ const actionTypes = {
     turnSwitchOn: 'turnSwitchOn',
     pauseSwitch: 'pauseSwitch',
     turnSwitchOff: 'turnSwitchOff',
-    startBaking: 'heatOvenEnough',
+    startBaking: 'startBaking',
     releaseMotorPulses: 'releaseMotorPulses',
-    usePulseByExtruder: 'usePulseByExtruder',
-    usePulseByStamper: 'usePulseByStamper',
-    bakeBiscuit: 'bakeBiscuit',
     markPulseInUseByExtruder: 'markPulseInUseByExtruder',
-    markPulseInUseByStamper: 'markPulseInUseByStamper'
+    usePulseByExtruder: 'usePulseByExtruder',
+    markPulseInUseByStamper: 'markPulseInUseByStamper',
+    usePulseByStamper: 'usePulseByStamper',
+    bakeBiscuitInProgress: 'bakeBiscuitInProgress',
+    bakeBiscuitDone: 'bakeBiscuitDone',
 }
 
 const initialState = {
@@ -31,6 +32,7 @@ const initialState = {
     totalPulsesReleased: 0,
     biscuitsToStampCount: 0,
     biscuitsToBakeCount: 0,
+    biscuitsBakingInProgressCount: 0,
     biscuitsBakedCount: 0,
     showNewBiscuit: false
 };
@@ -88,17 +90,22 @@ function reducer(state, action) {
             biscuitsToStampCount: state.biscuitsToStampCount - 1,
             biscuitsToBakeCount: state.biscuitsToBakeCount + 1
         };
-    case actionTypes.bakeBiscuit:
+    case actionTypes.bakeBiscuitInProgress:
         return {
             ...state,
             biscuitsToBakeCount: state.biscuitsToBakeCount - 1,
+            biscuitsBakingInProgressCount: state.biscuitsBakingInProgressCount + 1
+        };
+    case actionTypes.bakeBiscuitDone:
+        return {
+            ...state,
+            biscuitsBakingInProgressCount: state.biscuitsBakingInProgressCount -1,
             biscuitsBakedCount: state.biscuitsBakedCount + 1
         };
     default:
       throw new Error(); // TODO
   }
 }
-
 
 export default function BiscuitMachine(props){
 
@@ -117,8 +124,14 @@ export default function BiscuitMachine(props){
         }
     };
 
+    const bakedBiscuits = []
+    for (let i=0; i<state.biscuitsBakedCount; i++) {
+        bakedBiscuits.push(<li key={i} className='baked-biscuit'>oOo</li>);
+    }
+
     const hasBiscuitsToStamp = state.biscuitsToStampCount > 0;
-    const hasBiscuitsToBake = state.biscuitsToBakeCount > 0;
+    const hasBiscuitsToBake = state.biscuitsToBakeCount > 0,
+        shouldShowBiscuitInOven = state.biscuitsToBakeCount > 0 || state.biscuitsBakingInProgressCount > 0;
     const shouldExtruderUsePulse = state.pulsesCount > 0 && !hasBiscuitsToStamp,
         shouldExtruderShowBiscuit = shouldExtruderUsePulse || state.pulsesInUseByExtruder > 0;
     const shouldStamperUsePulse = state.pulsesCount > 0 && hasBiscuitsToStamp,
@@ -144,7 +157,9 @@ export default function BiscuitMachine(props){
                     isOn={state.isOvenOn} 
                     onStartBaking={() => dispatch({type: actionTypes.startBaking})}
                     hasBiscuitsToBake={hasBiscuitsToBake}
-                    onBiscuitBaked={() => dispatch({type: actionTypes.bakeBiscuit})}
+                    shouldShowBiscuitInOven={shouldShowBiscuitInOven}
+                    onBakeBiscuitInProgress={() => dispatch({type: actionTypes.bakeBiscuitInProgress})}
+                    onBakeBiscuitDone={() => dispatch({type: actionTypes.bakeBiscuitDone})}
                 />
             </div>
             <Conveyor isOn={state.isConveyorOn}/>
@@ -167,7 +182,12 @@ export default function BiscuitMachine(props){
                 <div>Pulses free: {state.pulsesCount}</div>
                 <div>Biscuits to stamp: {state.biscuitsToStampCount}</div>
                 <div>Biscuits to bake: {state.biscuitsToBakeCount}</div>
+                <div>Biscuits baking in progress: {state.biscuitsBakingInProgressCount}</div>
                 <div>Biscuits baked: {state.biscuitsBakedCount}</div>
+            </div>
+            <div className='biscuits-container'>
+                <h2>Bucket with Biscuits</h2>
+                <ul className='biscuits-list'>{bakedBiscuits}</ul>
             </div>
         </div>
     )
