@@ -4,12 +4,13 @@ export default function Extruder(props) {
 
     useEffect(() => {
         if(props.shouldUsePulse) {
+            props.onMarkPulseInUse();
             setTimeout(props.onPulseUsed, 2000);
         }
     });
 
     let doughElement = '';
-    if(props.shouldUsePulse){
+    if(props.shouldShowBiscuit){
         doughElement=<div>oOo</div>;
     }
 

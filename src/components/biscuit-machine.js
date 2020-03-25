@@ -7,19 +7,6 @@ import Extruder from './extruder';
 import Stamper from './stamper';
 import './global.css';
 
-
-const initialState = {
-    switchState: SWITCH_STATES.OFF,
-    isOvenOn: false,
-    isMotorOn: false,
-    isConveyorOn: false,
-    pulsesCount: 0,
-    totalPulsesReleased: 0,
-    biscuitsToStampCount: 0,
-    biscuitsToBakeCount: 0,
-    biscuitsBakedCount: 0
-};
-
 const actionTypes = {
     turnSwitchOn: 'turnSwitchOn',
     pauseSwitch: 'pauseSwitch',
@@ -28,13 +15,27 @@ const actionTypes = {
     releaseMotorPulses: 'releaseMotorPulses',
     usePulseByExtruder: 'usePulseByExtruder',
     usePulseByStamper: 'usePulseByStamper',
-    bakeBiscuit: 'bakeBiscuit'
+    bakeBiscuit: 'bakeBiscuit',
+    markPulseInUseByExtruder: 'markPulseInUseByExtruder',
+    markPulseInUseByStamper: 'markPulseInUseByStamper'
 }
 
+const initialState = {
+    switchState: SWITCH_STATES.OFF,
+    isOvenOn: false,
+    isMotorOn: false,
+    isConveyorOn: false,
+    pulsesCount: 0,
+    pulsesInUseByExtruder: 0,
+    pulsesInUseByStamper: 0,
+    totalPulsesReleased: 0,
+    biscuitsToStampCount: 0,
+    biscuitsToBakeCount: 0,
+    biscuitsBakedCount: 0,
+    showNewBiscuit: false
+};
+
 function reducer(state, action) {
-
-    console.log(action, state);
-
   switch (action.type) {
     case actionTypes.turnSwitchOn:
         return {
@@ -62,16 +63,28 @@ function reducer(state, action) {
             pulsesCount: state.pulsesCount + 1,
             totalPulsesReleased: state.totalPulsesReleased + 1,
         }
+    case actionTypes.markPulseInUseByExtruder:
+        return {
+            ...state,
+            pulsesInUseByExtruder: state.pulsesInUseByExtruder + 1,
+            pulsesCount: state.pulsesCount - 1
+        }
+    case actionTypes.markPulseInUseByStamper:
+        return {
+            ...state,
+            pulsesInUseByStamper: state.pulsesInUseByStamper + 1,
+            pulsesCount: state.pulsesCount - 1
+        }
     case actionTypes.usePulseByExtruder:
         return {
             ...state,
-            pulsesCount: state.pulsesCount - 1,
+            pulsesInUseByExtruder: state.pulsesInUseByExtruder - 1,
             biscuitsToStampCount: state.biscuitsToStampCount + 1
         };
     case actionTypes.usePulseByStamper:
         return {
             ...state,
-            pulsesCount: state.pulsesCount - 1,
+            pulsesInUseByStamper: state.pulsesInUseByStamper - 1,
             biscuitsToStampCount: state.biscuitsToStampCount - 1,
             biscuitsToBakeCount: state.biscuitsToBakeCount + 1
         };
@@ -85,6 +98,7 @@ function reducer(state, action) {
       throw new Error(); // TODO
   }
 }
+
 
 export default function BiscuitMachine(props){
 
@@ -105,9 +119,10 @@ export default function BiscuitMachine(props){
 
     const hasBiscuitsToStamp = state.biscuitsToStampCount > 0;
     const hasBiscuitsToBake = state.biscuitsToBakeCount > 0;
-
-    const shouldExtruderUsePulse = state.pulsesCount > 0 && !hasBiscuitsToStamp;
-    const shouldStamperUsePulse = state.pulsesCount > 0 && hasBiscuitsToStamp;
+    const shouldExtruderUsePulse = state.pulsesCount > 0 && !hasBiscuitsToStamp,
+        shouldExtruderShowBiscuit = shouldExtruderUsePulse || state.pulsesInUseByExtruder > 0;
+    const shouldStamperUsePulse = state.pulsesCount > 0 && hasBiscuitsToStamp,
+        shouldStamperShowBiscuit = shouldStamperUsePulse || state.pulsesInUseByStamper > 0;
     
     return (
         <div className='container'>
@@ -115,11 +130,15 @@ export default function BiscuitMachine(props){
             <div>
                 <Extruder 
                     onPulseUsed={() => dispatch({type: actionTypes.usePulseByExtruder})} 
-                    shouldUsePulse={shouldExtruderUsePulse} 
+                    shouldUsePulse={shouldExtruderUsePulse}
+                    shouldShowBiscuit = {shouldExtruderShowBiscuit}
+                    onMarkPulseInUse={() => dispatch({type: actionTypes.markPulseInUseByExtruder})} 
                 />
                 <Stamper 
                     onPulseUsed={() => dispatch({type: actionTypes.usePulseByStamper})}
-                    shouldUsePulse={shouldStamperUsePulse} 
+                    shouldUsePulse={shouldStamperUsePulse}
+                    shouldShowBiscuit = {shouldStamperShowBiscuit}
+                    onMarkPulseInUse={() => dispatch({type: actionTypes.markPulseInUseByStamper})} 
                 />
                 <Oven 
                     isOn={state.isOvenOn} 
@@ -143,7 +162,9 @@ export default function BiscuitMachine(props){
             <div className='stats'>
                 <h2>Stats</h2>
                 <div>Total pulses released: {state.totalPulsesReleased}</div>
-                <div>Pulses: {state.pulsesCount}</div>
+                <div>Pulses in use by extruder: {state.pulsesInUseByExtruder}</div>
+                <div>Pulses in use by stamper: {state.pulsesInUseByStamper}</div>
+                <div>Pulses free: {state.pulsesCount}</div>
                 <div>Biscuits to stamp: {state.biscuitsToStampCount}</div>
                 <div>Biscuits to bake: {state.biscuitsToBakeCount}</div>
                 <div>Biscuits baked: {state.biscuitsBakedCount}</div>
