@@ -26,7 +26,6 @@ export default class BakeBiscuitInterval extends React.Component {
     }
 
     bakeBiscuit = () => {
-        console.log('bake biscuits');
         if(this.props.hasBiscuitsToBake) {
             this.props.onBiscuitBaked();
         }else{

@@ -14,8 +14,6 @@ const
     INITIAL_TEMPERATURE = 40;
 
 export default class Oven extends React.Component {
-    heatingInterval = null;
-
     constructor(props) {
         super(props);
        
