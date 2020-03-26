@@ -1,16 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 export default function Stamper(props) {
     
-    useEffect(() => {
-        if(props.shouldUsePulse) {
-            props.onMarkPulseInUse();
-            setTimeout(props.onPulseUsed, 2000);
-        }
-    });
-    
     let doughElement = '';
-    if(props.shouldShowBiscuit){
+    if(props.hasBiscuitToStamp){
         doughElement=<div>oOo</div>;
     }
     return (
