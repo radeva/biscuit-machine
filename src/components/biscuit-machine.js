@@ -7,8 +7,6 @@ import Extruder from './extruder';
 import Stamper from './stamper';
 import {ReactComponent as BakedBiscuitSVG} from './../images/baked-biscuit.svg';
 
-import './global.css';
-
 // shouldPushNewBiscuit, hasBiscuitToStamp, hasBiscuitToBake
 const initialState = 0b000;
 

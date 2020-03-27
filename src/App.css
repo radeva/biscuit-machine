@@ -2,41 +2,194 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.left{
+  float:left
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.right {
+  float:right;
+}
+
+.container {
+  width: 600px;
+  margin: auto;
+}
+
+
+/* Conveyor */
+.path {
+  stroke-dasharray: 20;
+}
+
+/* Oven */
+.oven {
+  padding: 5px;
+  border: 2px solid grey;
+  margin: auto;
+  width: 140px;
+  height: 100px;
+  margin-right: 100px;
+  margin-bottom: 10px;
+  border-radius: 25px 25px 0 0;
+  border-bottom: 0px;
+}
+
+.oven-light {
+  font-size: 200%;
+  text-align: center;
+  margin-left: 10px;
+}
+
+.oven-light-off {
+  color: grey;
+}
+
+.oven-light-on {
+  color: orange;
+}
+
+.baked-biscuit {
+  position: relative;
+  top: 42px;
+  left: -40px;
+  animation: bakedbiscuit 4s linear infinite;
+}
+
+@keyframes bakedbiscuit {
+  0%{
+      transform: translate(0, 0);
+  }
+  100%{
+      transform: translate(170px, 0);
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+
+
+/* Switch */
+.switch-container {
+  margin-top: 20px;
+}
+
+.switch-button {
+  padding: 10px;
+  margin-right: 2px;
+}
+
+.switch-button-active{
+  background-color: red;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+/* Motor */
+
+.motor{
+  margin-top: 20px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.motor-on {
+  animation: motorrotation 4s linear infinite;
+}
+
+@keyframes motorrotation {
+  from{
+      transform: rotate(0deg);
   }
-  to {
-    transform: rotate(360deg);
+  to{
+      transform: rotate(360deg);
   }
 }
 
-.path {
-  stroke-dasharray: 20;
+
+/* Extruder */
+.extruder {
+  margin-right: 25px;
+  margin-left: 50px;
+}
+
+.extruder-svg, .stamper-svg {
+  width: 50px;
+  height: 60px;
+  margin-top: 20px;
+}
+/* Biscuit Animations */
+.biscuit-dough {
+  position: relative;
+  animation: biscuitdough 4s linear infinite;
+}
+
+@keyframes biscuitdough {
+  0%{
+      transform: translate(0, 0);
+  }
+  40%{
+      transform: translate(0, 17px);
+  }
+  100%{
+      transform: translate(78px, 17px);
+  }
+}
+
+.stamper-pusher {
+  width: 30px;
+  position: relative;
+  top: 16px;
+  left: -39px;
+  z-index: -1
+}
+
+.stamper-pusher-on {
+  animation: stamperpusher 4s linear infinite;
+}
+
+@keyframes stamperpusher {
+  0%{
+      transform: translate(0, 0);
+  }
+  80% {
+      transform: translate(0, 0);
+  }
+  90%{
+      transform: translate(0, 25px);
+  }
+  100%{
+      transform: translate(0, 0);
+  }
+}
+
+.raw-biscuit {
+  position: relative;
+  top: 45px;
+  left: -70px;
+  animation: rawbiscuit 4s linear infinite;
+}
+
+@keyframes rawbiscuit {
+  0%{
+      transform: translate(0, 0);
+  }
+  100%{
+      transform: translate(230px, 0);
+  }
+}
+
+.animation-paused {
+  animation-play-state: paused;
+}
+
+/* Other */
+
+.biscuits-container{
+  clear:both;
+  text-align: left;
+  float: left;
+}
+ul.biscuits-list li{
+  float:left;
+  list-style: none;
+  margin-right: 10px;
+}
+
+ul.biscuits-list li:nth-child(10n+1){
+  clear:left;
 }
