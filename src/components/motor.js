@@ -1,11 +1,15 @@
 import React from 'react';
-import {ReactComponent as MotorSVG} from './motor.svg';
+import {ReactComponent as MotorSVG} from './../images/motor.svg';
 import useInterval from 'react-useinterval';
 
 const MOTOR_TIMEOUT = 4000;
 
 export default function Motor(props) {
     let containerCss = 'motor';
+
+    if(props.isMachineMovementPaused) {
+        containerCss += ' motor-on animation-paused';
+    }
     if(props.isOn) {
         containerCss += ' motor-on';
     }

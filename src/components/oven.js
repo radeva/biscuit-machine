@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { SWITCH_STATES } from './switch';
 import useInterval from 'react-useinterval';
+import {ReactComponent as BakedBiscuitSVG} from './../images/baked-biscuit.svg';
 
 const 
     OVEN_MIN_TEMPERATURE = 220,
@@ -18,7 +19,6 @@ export default function Oven(props) {
     const [temperature, setTemperature] = useState(INITIAL_TEMPERATURE),
         [isOn, setIsOn] = useState(false),
         [isWarmingUp, setIsWarmingUp] = useState(false);
-    
     
     const isOvenOn = props.switchState !== SWITCH_STATES.OFF || props.hasBiscuitOnConveyor;
     if((!isOn && isOvenOn) || (isOn && !isOvenOn)){
@@ -52,7 +52,6 @@ export default function Oven(props) {
         setTemperature(newTemperature);
         
         if(newTemperature === OVEN_MIN_TEMPERATURE) {
-            console.log('oven, temperature reached')
             props.handleOvenReady(true);
         }
     }
@@ -77,16 +76,20 @@ export default function Oven(props) {
         ovenLightClassName += ' ' + ovenLightClassName + '-on';
     }
 
-    let biscuitElement = '';
+    let biscuitElement = '',
+        animationPausedClass = '';
+    if(props.isMachineMovementPaused){
+        animationPausedClass = 'animation-paused';
+    }
     if(props.hasBiscuitToBake) {
-        biscuitElement=<div>oOo</div>;
+        biscuitElement=<BakedBiscuitSVG className={'baked-biscuit ' + animationPausedClass} />;
     }
 
     return (
         <div className='oven right' >
             <label>GORENJE</label><span className={ovenLightClassName}>&#8226;</span><br />
             <label>{temperature}<span>&#8451;</span></label>
-            {biscuitElement}
+            <div>{biscuitElement}</div>
         </div>
     );
 }

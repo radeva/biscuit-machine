@@ -5,6 +5,8 @@ import Conveyor from './conveyor';
 import Motor from './motor';
 import Extruder from './extruder';
 import Stamper from './stamper';
+import {ReactComponent as BakedBiscuitSVG} from './../images/baked-biscuit.svg';
+
 import './global.css';
 
 // shouldPushNewBiscuit, hasBiscuitToStamp, hasBiscuitToBake
@@ -13,7 +15,8 @@ const initialState = 0b000;
 export default function BiscuitMachine(props) { 
     const [machineState, setMachineState] = useState(initialState),
         [switchState, setSwitchState] = useState(SWITCH_STATES.OFF),
-        [isMachineOn, setIsMachineOn] = useState(false),
+        [isOvenReady, setIsOvenReady] = useState(false),
+        [isMachineMovementOn, setIsMachineMovementOn] = useState(false),
         [biscuitsBakedCount, setBiscuitsBakedCount] = useState(0);
 
     const shouldPushNewBiscuit = machineState & 0b100,
@@ -35,7 +38,6 @@ export default function BiscuitMachine(props) {
     };
 
     const handleMotorPulse = () => {
-        console.log('handle pulse');
         if(switchState === switchState.PAUSE){
             return;
         }
@@ -61,6 +63,9 @@ export default function BiscuitMachine(props) {
                 setBiscuitsBakedCount(biscuitsBakedCount + 1)
                 nextState = 0b001; // switch OFF
                 break;
+            case 0b010:
+                nextState = 0b001; // switch OFF
+                break;
             case 0b001:
                 setBiscuitsBakedCount(biscuitsBakedCount + 1)
                 nextState = 0b000; // switch OFF
@@ -70,8 +75,8 @@ export default function BiscuitMachine(props) {
         setMachineState(nextState);
     }
 
-    const handleOvenReady = () => {
-        setIsMachineOn(true);
+    const handleOvenReady = (isReady) => {
+        setIsOvenReady(isReady);
     };
 
     let hasBiscuitOnConveyor = shouldPushNewBiscuit || 
@@ -79,14 +84,16 @@ export default function BiscuitMachine(props) {
         hasBiscuitToBake;
 
     useEffect(() => {
-        if(switchState === SWITCH_STATES.OFF && !hasBiscuitOnConveyor) {
-            setIsMachineOn(false);
-        }
+        setIsMachineMovementOn(
+            (switchState === SWITCH_STATES.ON && isOvenReady) ||
+            (switchState === SWITCH_STATES.OFF && hasBiscuitOnConveyor));
     });
 
-    const bakedBiscuits = []
+    const isMachineMovementPaused = switchState === SWITCH_STATES.PAUSE;
+
+    const bakedBiscuits = [];
     for (let i=0; i<biscuitsBakedCount; i++) {
-        bakedBiscuits.push(<li key={i} className='baked-biscuit'>oOo</li>);
+        bakedBiscuits.push(<li key={i}><BakedBiscuitSVG /></li>);
     }
 
     return  (
@@ -95,35 +102,39 @@ export default function BiscuitMachine(props) {
             <div>
                 <Extruder 
                     shouldPushNewBiscuit = {shouldPushNewBiscuit}
+                    isMachineMovementPaused = {isMachineMovementPaused}
                 />
                 <Stamper 
                     hasBiscuitToStamp = {hasBiscuitToStamp}
+                    isMachineMovementOn = {isMachineMovementOn}
+                    isMachineMovementPaused = {isMachineMovementPaused}
                 />
                 <Oven 
                     switchState={switchState}
                     hasBiscuitOnConveyor={hasBiscuitOnConveyor}
                     hasBiscuitToBake={hasBiscuitToBake}
                     handleOvenReady={handleOvenReady}
+                    isMachineMovementPaused = {isMachineMovementPaused}
                 />
             </div>
-            <Conveyor isOn={isMachineOn} />
+            <Conveyor isOn={isMachineMovementOn} />
             <div>
                 <div className='left'>
                     <Motor 
-                        isOn={isMachineOn} 
-                        onSendPulse={handleMotorPulse}
+                        isOn = {isMachineMovementOn} 
+                        onSendPulse = {handleMotorPulse}
+                        isMachineMovementPaused = {isMachineMovementPaused}
                     />
                 </div>
                 <div className='right'>
-                    <Switch onSwitchClick={handleSwitchClick} switchState={switchState}/>
+                    <Switch 
+                        onSwitchClick = {handleSwitchClick} 
+                        switchState = {switchState} 
+                    />
                 </div>
             </div>
-            <div className='stats'>
-                <h2>Stats</h2>
-                <div>Biscuits baked: {biscuitsBakedCount} </div>
-            </div>
             <div className='biscuits-container'>
-                <h2>Bucket with Biscuits</h2>
+                <h2>Bucket with Biscuits ({biscuitsBakedCount})</h2>
                 <ul className='biscuits-list'>{bakedBiscuits}</ul>
             </div>
         </div>);

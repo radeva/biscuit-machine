@@ -1,15 +1,21 @@
 import React from 'react';
+import {ReactComponent as ExtruderSVG} from './../images/extruder.svg';
+import {ReactComponent as BiscuitDoughSVG} from './../images/biscuit-dough.svg';
 
 export default function Extruder(props) {
 
-    let doughElement = '';
+    let doughElement = '',
+        animationPausedClass = '';
+    if(props.isMachineMovementPaused) {
+        animationPausedClass = 'animation-paused';
+    }
     if(props.shouldPushNewBiscuit){
-        doughElement=<div>oOo</div>;
+        doughElement=<BiscuitDoughSVG className={'biscuit-dough ' + animationPausedClass}/>;
     }
 
     return (
         <div className='extruder left'>
-            <div>EXTRUDER HERE</div>
+            <div><ExtruderSVG /></div>
             {doughElement}
         </div>
     );

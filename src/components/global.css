@@ -23,7 +23,7 @@
     border: 2px solid grey;
     margin: auto;
     width: 140px;
-    height: 80px;
+    height: 100px;
     margin-right: 100px;
     margin-bottom: 10px;
     border-radius: 25px 25px 0 0;
@@ -43,6 +43,24 @@
 .oven-light-on {
     color: orange;
 }
+
+.baked-biscuit {
+    position: relative;
+    top: 42px;
+    left: -40px;
+    animation: bakedbiscuit 4s linear infinite;
+}
+
+@keyframes bakedbiscuit {
+    0%{
+        transform: translate(0, 0);
+    }
+    100%{
+        transform: translate(170px, 0);
+    }
+}
+
+
 
 /* Switch */
 .switch-container {
@@ -81,17 +99,86 @@
 
 /* Extruder */
 .extruder {
-    margin-right: 20px;
+    margin-right: 25px;
+    margin-left: 50px;
 }
 
-.stats {
+.extruder-svg, .stamper-svg {
+    width: 50px;
+    height: 60px;
+    margin-top: 20px;
+}
+/* Biscuit Animations */
+.biscuit-dough {
+    position: relative;
+    animation: biscuitdough 4s linear infinite;
+}
+
+@keyframes biscuitdough {
+    0%{
+        transform: translate(0, 0);
+    }
+    40%{
+        transform: translate(0, 17px);
+    }
+    100%{
+        transform: translate(78px, 17px);
+    }
+}
+
+.stamper-pusher {
+    width: 30px;
+    position: relative;
+    top: 16px;
+    left: -39px;
+    z-index: -1
+}
+
+.stamper-pusher-on {
+    animation: stamperpusher 4s linear infinite;
+}
+
+@keyframes stamperpusher {
+    0%{
+        transform: translate(0, 0);
+    }
+    80% {
+        transform: translate(0, 0);
+    }
+    90%{
+        transform: translate(0, 25px);
+    }
+    100%{
+        transform: translate(0, 0);
+    }
+}
+
+.raw-biscuit {
+    position: relative;
+    top: 45px;
+    left: -70px;
+    animation: rawbiscuit 4s linear infinite;
+}
+
+@keyframes rawbiscuit {
+    0%{
+        transform: translate(0, 0);
+    }
+    100%{
+        transform: translate(230px, 0);
+    }
+}
+
+.animation-paused {
+    animation-play-state: paused;
+}
+
+/* Other */
+
+.biscuits-container{
     clear:both;
     text-align: left;
     float: left;
-}
-
-.biscuits-container{
-    float: right;
 }
 ul.biscuits-list li{
     float:left;
@@ -99,6 +186,6 @@ ul.biscuits-list li{
     margin-right: 10px;
 }
 
-ul.biscuits-list li:nth-child(5n){
+ul.biscuits-list li:nth-child(10n+1){
     clear:left;
 }

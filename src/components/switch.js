@@ -13,7 +13,6 @@ export default class Switch extends React.Component {
       this.handleClickPause = this.handleClickPause.bind(this);
       this.handleClickOff = this.handleClickOff.bind(this);
     }
-  
 
     // TODO: Use one method only ???
     handleClickOn(e) {
@@ -29,12 +28,13 @@ export default class Switch extends React.Component {
     }
   
     render() {
-      const activeState = this.props.switchState;
+      const activeState = this.props.switchState,
+        isPauseDisabled = activeState !== SWITCH_STATES.ON;
       return (
         <div className="switch-container">
           <div>Switch</div>
           <SwitchButton name={SWITCH_STATES.ON} activeButtonName={activeState} onClick={this.handleClickOn}/>
-          <SwitchButton name={SWITCH_STATES.PAUSE} activeButtonName={activeState} onClick={this.handleClickPause}/>
+          <SwitchButton name={SWITCH_STATES.PAUSE} disabled={isPauseDisabled} activeButtonName={activeState} onClick={this.handleClickPause}/>
           <SwitchButton name={SWITCH_STATES.OFF} activeButtonName={activeState} onClick={this.handleClickOff}/>
         </div>
       );
@@ -60,7 +60,7 @@ class SwitchButton extends React.Component {
       }
   
       return (
-        <button className={buttonClassName} onClick={this.handleClick}> {buttonName} </button>
+        <button className={buttonClassName} onClick={this.handleClick} disabled={this.props.disabled}> {buttonName} </button>
       )
     }
 }
