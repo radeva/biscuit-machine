@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function SwitchButton(props) {
     const handleClick = (e) => {
@@ -20,4 +21,14 @@ export default function SwitchButton(props) {
         {buttonName} 
       </button>
     )
+}
+
+SwitchButton.propTypes = {
+    name: PropTypes.string.isRequired,
+    activeButtonName: PropTypes.string,
+    disabled: PropTypes.bool
+}
+
+SwitchButton.defaultProps = {
+    disabled: false
 }
