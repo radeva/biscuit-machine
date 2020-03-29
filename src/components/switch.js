@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SwitchButton from './switch-button';
 
 export const SWITCH_STATES = {
@@ -6,6 +7,7 @@ export const SWITCH_STATES = {
     OFF: 'OFF',
     PAUSE: 'PAUSE'
 }
+
 export default function Switch(props) {
     const handleClick = (e) => {
       props.onSwitchClick(e);
@@ -22,4 +24,13 @@ export default function Switch(props) {
         <SwitchButton name={SWITCH_STATES.OFF} activeButtonName={activeState} onClick={handleClick}/>
       </div>
     );
+}
+
+Switch.propTypes = {
+  switchState: PropTypes.oneOf(Object.values(SWITCH_STATES)).isRequired,
+  onSwitchClick: PropTypes.func.isRequired
+}
+
+Switch.defaultProps = {
+  switchState: SWITCH_STATES.OFF
 }

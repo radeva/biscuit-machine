@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import SwitchButton from '../switch-button';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 
