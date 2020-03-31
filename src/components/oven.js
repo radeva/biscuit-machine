@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
-import { SWITCH_STATES } from './switch';
+import PropTypes from 'prop-types';
 import useInterval from 'react-useinterval';
+import { SWITCH_STATES } from './switch';
 import {ReactComponent as BakedBiscuitSVG} from './../images/baked-biscuit.svg';
 
-const 
+export const 
     OVEN_MIN_TEMPERATURE = 220,
     OVEN_MAX_TEMPERATURE = 240,
     HEAT_OVEN_STEP = 2,
-    HEAT_OVEN_INTERVAL_IN_SECONDS = 100,
-    COOLDOWN_OVEN_INTERVAL_IN_SECONDS = 1000,
-    COOLDOWN_OVEN_STEP = 2,
-    WARMUP_OVEN_INTERVAL_IN_SECONDS = 1000,
-    WARMUP_OVEN_STEP = 2,
+    HEAT_OVEN_INTERVAL_IN_MSECONDS = 100,
+    WARMUP_COOLDOWN_OVEN_INTERVAL_IN_MSECONDS = 1000,
     INITIAL_TEMPERATURE = 40;
-
 
 export default function Oven(props) {
     const [temperature, setTemperature] = useState(INITIAL_TEMPERATURE),
@@ -41,9 +38,6 @@ export default function Oven(props) {
             ((!isWarmingUp || !isOn) && temperature > OVEN_MIN_TEMPERATURE && temperature < OVEN_MAX_TEMPERATURE);
 
     const calculateTemperatureDown = () => {
-        if(temperature === INITIAL_TEMPERATURE) {
-            return;
-        }
         setTemperature(temperature - HEAT_OVEN_STEP);
     }
 
@@ -58,18 +52,18 @@ export default function Oven(props) {
 
     const coolDown = () => {
         setIsWarmingUp(false);
-        setTemperature(temperature - COOLDOWN_OVEN_STEP);
+        setTemperature(temperature - HEAT_OVEN_STEP);
     }
 
     const warmUp = () => {
         setIsWarmingUp(true);
-        setTemperature(temperature + WARMUP_OVEN_STEP);
+        setTemperature(temperature + HEAT_OVEN_STEP);
     }
 
-    useInterval(calculateTemperatureUp, shouldTemperatureGoUp ? HEAT_OVEN_INTERVAL_IN_SECONDS : null);
-    useInterval(calculateTemperatureDown, shouldTemperatureGoDown ? HEAT_OVEN_INTERVAL_IN_SECONDS : null);
-    useInterval(coolDown, shouldCoolDown ? COOLDOWN_OVEN_INTERVAL_IN_SECONDS : null);
-    useInterval(warmUp, shouldWarmUp ? WARMUP_OVEN_INTERVAL_IN_SECONDS : null);
+    useInterval(calculateTemperatureUp, shouldTemperatureGoUp ? HEAT_OVEN_INTERVAL_IN_MSECONDS : null);
+    useInterval(calculateTemperatureDown, shouldTemperatureGoDown ? HEAT_OVEN_INTERVAL_IN_MSECONDS : null);
+    useInterval(coolDown, shouldCoolDown ? WARMUP_COOLDOWN_OVEN_INTERVAL_IN_MSECONDS : null);
+    useInterval(warmUp, shouldWarmUp ? WARMUP_COOLDOWN_OVEN_INTERVAL_IN_MSECONDS : null);
 
     let ovenLightClassName = 'oven-light';
     if(isOn){
@@ -78,18 +72,31 @@ export default function Oven(props) {
 
     let biscuitElement = '',
         animationPausedClass = '';
-    if(props.isMachineMovementPaused){
+    if(props.switchState === SWITCH_STATES.PAUSE){
         animationPausedClass = 'animation-paused';
     }
     if(props.hasBiscuitToBake) {
-        biscuitElement=<BakedBiscuitSVG className={'baked-biscuit ' + animationPausedClass} />;
+        biscuitElement=<BakedBiscuitSVG data-testid="biscuit-in-oven" className={'baked-biscuit ' + animationPausedClass} />;
     }
 
     return (
         <div className='oven right' >
-            <label>GORENJE</label><span className={ovenLightClassName}>&#8226;</span><br />
-            <label>{temperature}<span>&#8451;</span></label>
+            <label>GORENJE</label><span className={ovenLightClassName} data-testid="oven-light">&#8226;</span><br />
+            <label data-testid="oven-temperature">{temperature}<span>&#8451;</span></label>
             <div>{biscuitElement}</div>
         </div>
     );
+}
+
+
+Oven.propTypes = {
+    switchState: PropTypes.oneOf(Object.values(SWITCH_STATES)).isRequired,
+    hasBiscuitOnConveyor: PropTypes.bool,
+    handleOvenReady: PropTypes.func.isRequired,
+    hasBiscuitToBake: PropTypes.bool
+}
+
+Oven.defaultProps = {
+    hasBiscuitOnConveyor: false,
+    hasBiscuitToBake: false
 }

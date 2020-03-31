@@ -4,7 +4,6 @@ import { render, cleanup, fireEvent } from '@testing-library/react';
 
 afterEach(cleanup);
 
-
 it("renders switch buttons correctly", () => {
     const handleClick = jest.fn();
 
@@ -26,7 +25,7 @@ it("handles switch button click correctly", () => {
     expect(handleClick).toHaveBeenCalledWith("ON"); 
 });
 
-it("pause is disabled when switch is turned off", () => {
+it("disables Pause button when switch is turned off", () => {
     const handleClick = jest.fn();
     const {getByText} = render(<Switch switchState={SWITCH_STATES.OFF} onSwitchClick={handleClick}/>);
     
