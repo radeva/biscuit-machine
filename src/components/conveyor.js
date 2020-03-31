@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {ReactComponent as ConveyorSVG} from './conveyor.svg';
 import styled from 'styled-components'
 
@@ -24,4 +25,12 @@ export default function Conveyor(props) {
             {conveyorElement}
         </div>
     );
+}
+
+Conveyor.propTypes = {
+    isOn: PropTypes.bool
+}
+
+Conveyor.defaultProps = {
+    isOn: false
 }
