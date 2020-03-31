@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders stamper correctly when machine is off 1`] = `
+<div>
+  <div
+    class="stamper left"
+  >
+    <svg>
+      stamper.svg
+    </svg>
+    <svg
+      class="stamper-pusher "
+      data-testid="stamper-pusher"
+    >
+      stamper-pusher.svg
+    </svg>
+    
+  </div>
+</div>
+`;
