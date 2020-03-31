@@ -32,7 +32,6 @@ export default function Stamper(props) {
     );
 }
 
-
 Stamper.propTypes = {
     isMachineMovementOn: PropTypes.bool,
     isMachineMovementPaused: PropTypes.bool,
