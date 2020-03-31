@@ -88,7 +88,6 @@ export default function Oven(props) {
     );
 }
 
-
 Oven.propTypes = {
     switchState: PropTypes.oneOf(Object.values(SWITCH_STATES)).isRequired,
     hasBiscuitOnConveyor: PropTypes.bool,
