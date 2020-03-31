@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders conveyor correctly when off 1`] = `
+<div>
+  <div
+    class="conveyor"
+  >
+    <svg>
+      conveyor.svg
+    </svg>
+  </div>
+</div>
+`;
+
+exports[`renders conveyor correctly when on 1`] = `
+<div>
+  <div
+    class="conveyor"
+  >
+    <svg
+      class="sc-AxjAm eBcJJU"
+    >
+      conveyor.svg
+    </svg>
+  </div>
+</div>
+`;
