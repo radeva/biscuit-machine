@@ -17,7 +17,7 @@ export default function Motor(props) {
 
     let intervalOffset = 0, 
         lastIntervalStartDate = new Date();
-        
+
     const handlePulse = () => {
         if(props.isMachineMovementPaused) {
             if(intervalOffset === 0) {
@@ -41,7 +41,7 @@ export default function Motor(props) {
 
     useInterval(handlePulse, (props.isOn || props.isMachineMovementPaused) ? MOTOR_TIMEOUT : null);
     return (
-        <div data-testid='motor-container' className={containerCss}> <MotorSVG /> </div>
+        <div data-testid='motor-container' className={containerCss}> <MotorSVG className="motor-svg" /> </div>
     );
 }
 

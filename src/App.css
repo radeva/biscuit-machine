@@ -83,8 +83,12 @@
 
 /* Motor */
 
-.motor{
-  margin-top: 20px;
+.motor-svg {
+  width: 80px;
+}
+
+.motor {
+  margin-left: 40px;
 }
 
 .motor-on {
@@ -183,6 +187,9 @@
   clear:both;
   text-align: left;
   float: left;
+}
+.biscuits-container h2 {
+  margin-left: 40px;
 }
 ul.biscuits-list li{
   float:left;
