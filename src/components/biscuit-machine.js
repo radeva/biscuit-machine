@@ -22,23 +22,13 @@ export default function BiscuitMachine(props) {
             hasBiscuitToBake = machineState & 0b001;
 
     const handleSwitchClick = (switchState) => {
-        switch(switchState) {
-            case SWITCH_STATES.ON:
-                setSwitchState(SWITCH_STATES.ON)
-                break;
-            case SWITCH_STATES.OFF:
-                setSwitchState(SWITCH_STATES.OFF)
-                break;
-            case SWITCH_STATES.PAUSE:
-                setSwitchState(SWITCH_STATES.PAUSE)
-                break;
-        }
+        setSwitchState(switchState);
     };
 
     const handleMotorPulse = () => {
-        if(switchState === switchState.PAUSE){
-            return;
-        }
+        // if(switchState === switchState.PAUSE){
+        //     return;
+        // }
 
         let nextState = machineState;
         switch(machineState){
@@ -52,18 +42,18 @@ export default function BiscuitMachine(props) {
                 nextState = switchState === SWITCH_STATES.ON ? 0b111 : 0b011;
                 break;
             case 0b111:
+                setBiscuitsBakedCount(biscuitsBakedCount + 1)
                 if(switchState === SWITCH_STATES.OFF){
                     nextState = 0b011;
                 }
-                setBiscuitsBakedCount(biscuitsBakedCount + 1)
                 break;
             case 0b011:
                 setBiscuitsBakedCount(biscuitsBakedCount + 1)
                 nextState = 0b001; // switch OFF
                 break;
-            case 0b010:
-                nextState = 0b001; // switch OFF
-                break;
+            // case 0b010:
+            //     nextState = 0b001; // switch OFF
+            //     break;
             case 0b001:
                 setBiscuitsBakedCount(biscuitsBakedCount + 1)
                 nextState = 0b000; // switch OFF
@@ -112,7 +102,6 @@ export default function BiscuitMachine(props) {
                     hasBiscuitOnConveyor={hasBiscuitOnConveyor}
                     hasBiscuitToBake={hasBiscuitToBake}
                     handleOvenReady={handleOvenReady}
-                    isMachineMovementPaused = {isMachineMovementPaused}
                 />
             </div>
             <Conveyor isOn={isMachineMovementOn} />
@@ -133,7 +122,7 @@ export default function BiscuitMachine(props) {
             </div>
             <div className='biscuits-container'>
                 <h2>Bucket with Biscuits ({biscuitsBakedCount})</h2>
-                <ul className='biscuits-list'>{bakedBiscuits}</ul>
+                <ul className='biscuits-list' data-testid='biscuits-list'>{bakedBiscuits}</ul>
             </div>
         </div>);
 }
