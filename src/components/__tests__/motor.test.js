@@ -53,7 +53,6 @@ it("renders motor correctly when machine is paused", () => {
     expect(motorContainer).toBeInTheDocument();
     expect(motorContainer).toHaveClass("motor-on");
     expect(motorContainer).toHaveClass("animation-paused");
-    
 });
 
 it("sends pulse on every revolution", () => {

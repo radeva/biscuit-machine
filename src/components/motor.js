@@ -15,7 +15,31 @@ export default function Motor(props) {
         containerCss += ' motor-on';
     }
 
-    useInterval(props.onSendPulse, props.isOn ? MOTOR_TIMEOUT : null);
+    let intervalOffset = 0, 
+        lastIntervalStartDate = new Date();
+        
+    const handlePulse = () => {
+        if(props.isMachineMovementPaused) {
+            if(intervalOffset === 0) {
+                intervalOffset = (new Date()).getTime() - lastIntervalStartDate.getTime();
+            }
+
+            return;
+        }
+
+        if(intervalOffset > 0){
+            setTimeout(() => {
+                lastIntervalStartDate = new Date();
+                props.onSendPulse();
+            }, intervalOffset);
+            intervalOffset = 0;
+        } else {
+            lastIntervalStartDate = new Date();
+            props.onSendPulse();
+        }
+    };
+
+    useInterval(handlePulse, (props.isOn || props.isMachineMovementPaused) ? MOTOR_TIMEOUT : null);
     return (
         <div data-testid='motor-container' className={containerCss}> <MotorSVG /> </div>
     );

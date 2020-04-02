@@ -14,22 +14,17 @@ export default function BiscuitMachine(props) {
     const [machineState, setMachineState] = useState(initialState),
         [switchState, setSwitchState] = useState(SWITCH_STATES.OFF),
         [isOvenReady, setIsOvenReady] = useState(false),
-        [isMachineMovementOn, setIsMachineMovementOn] = useState(false),
         [biscuitsBakedCount, setBiscuitsBakedCount] = useState(0);
 
-    const shouldPushNewBiscuit = machineState & 0b100,
-            hasBiscuitToStamp = machineState & 0b010,
-            hasBiscuitToBake = machineState & 0b001;
+    const shouldPushNewBiscuit = (machineState & 0b100) > 0,
+            hasBiscuitToStamp = (machineState & 0b010) > 0,
+            hasBiscuitToBake = (machineState & 0b001) > 0;
 
     const handleSwitchClick = (switchState) => {
         setSwitchState(switchState);
     };
 
     const handleMotorPulse = () => {
-        // if(switchState === switchState.PAUSE){
-        //     return;
-        // }
-
         let nextState = machineState;
         switch(machineState){
             case 0b000:
@@ -51,9 +46,6 @@ export default function BiscuitMachine(props) {
                 setBiscuitsBakedCount(biscuitsBakedCount + 1)
                 nextState = 0b001; // switch OFF
                 break;
-            // case 0b010:
-            //     nextState = 0b001; // switch OFF
-            //     break;
             case 0b001:
                 setBiscuitsBakedCount(biscuitsBakedCount + 1)
                 nextState = 0b000; // switch OFF
@@ -71,11 +63,9 @@ export default function BiscuitMachine(props) {
         hasBiscuitToStamp || 
         hasBiscuitToBake;
 
-    useEffect(() => {
-        setIsMachineMovementOn(
-            (switchState === SWITCH_STATES.ON && isOvenReady) ||
-            (switchState === SWITCH_STATES.OFF && hasBiscuitOnConveyor));
-    });
+    const isMachineMovementOn = 
+        (switchState === SWITCH_STATES.ON && isOvenReady) ||
+        (switchState === SWITCH_STATES.OFF && hasBiscuitOnConveyor);
 
     const isMachineMovementPaused = switchState === SWITCH_STATES.PAUSE;
 
