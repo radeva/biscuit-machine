@@ -2,19 +2,18 @@
   text-align: center;
 }
 
-.left{
-  float:left
+.left {
+  float: left;
 }
 
 .right {
-  float:right;
+  float: right;
 }
 
 .container {
   width: 600px;
   margin: auto;
 }
-
 
 /* Conveyor */
 .path {
@@ -56,15 +55,13 @@
 }
 
 @keyframes bakedbiscuit {
-  0%{
-      transform: translate(0, 0);
+  0% {
+    transform: translate(0, 0);
   }
-  100%{
-      transform: translate(170px, 0);
+  100% {
+    transform: translate(170px, 0);
   }
 }
-
-
 
 /* Switch */
 .switch-container {
@@ -76,7 +73,7 @@
   margin-right: 2px;
 }
 
-.switch-button-active{
+.switch-button-active {
   background-color: red;
   color: white;
 }
@@ -96,14 +93,13 @@
 }
 
 @keyframes motorrotation {
-  from{
-      transform: rotate(0deg);
+  from {
+    transform: rotate(0deg);
   }
-  to{
-      transform: rotate(360deg);
+  to {
+    transform: rotate(360deg);
   }
 }
-
 
 /* Extruder */
 .extruder {
@@ -111,7 +107,8 @@
   margin-left: 50px;
 }
 
-.extruder-svg, .stamper-svg {
+.extruder-svg,
+.stamper-svg {
   width: 50px;
   height: 60px;
   margin-top: 20px;
@@ -123,14 +120,14 @@
 }
 
 @keyframes biscuitdough {
-  0%{
-      transform: translate(0, 0);
+  0% {
+    transform: translate(0, 0);
   }
-  40%{
-      transform: translate(0, 17px);
+  40% {
+    transform: translate(0, 17px);
   }
-  100%{
-      transform: translate(78px, 17px);
+  100% {
+    transform: translate(78px, 17px);
   }
 }
 
@@ -139,7 +136,7 @@
   position: relative;
   top: 16px;
   left: -39px;
-  z-index: -1
+  z-index: -1;
 }
 
 .stamper-pusher-on {
@@ -147,17 +144,17 @@
 }
 
 @keyframes stamperpusher {
-  0%{
-      transform: translate(0, 0);
+  0% {
+    transform: translate(0, 0);
   }
   80% {
-      transform: translate(0, 0);
+    transform: translate(0, 0);
   }
-  90%{
-      transform: translate(0, 25px);
+  90% {
+    transform: translate(0, 25px);
   }
-  100%{
-      transform: translate(0, 0);
+  100% {
+    transform: translate(0, 0);
   }
 }
 
@@ -169,11 +166,11 @@
 }
 
 @keyframes rawbiscuit {
-  0%{
-      transform: translate(0, 0);
+  0% {
+    transform: translate(0, 0);
   }
-  100%{
-      transform: translate(230px, 0);
+  100% {
+    transform: translate(230px, 0);
   }
 }
 
@@ -183,20 +180,20 @@
 
 /* Other */
 
-.biscuits-container{
-  clear:both;
+.biscuits-container {
+  clear: both;
   text-align: left;
   float: left;
 }
 .biscuits-container h2 {
   margin-left: 40px;
 }
-ul.biscuits-list li{
-  float:left;
+ul.biscuits-list li {
+  float: left;
   list-style: none;
   margin-right: 10px;
 }
 
-ul.biscuits-list li:nth-child(10n+1){
-  clear:left;
+ul.biscuits-list li:nth-child(10n + 1) {
+  clear: left;
 }

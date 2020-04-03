@@ -3,34 +3,47 @@ import PropTypes from 'prop-types';
 import SwitchButton from './switch-button';
 
 export const SWITCH_STATES = {
-    ON: 'ON',
-    OFF: 'OFF',
-    PAUSE: 'PAUSE'
-}
+  ON: 'ON',
+  OFF: 'OFF',
+  PAUSE: 'PAUSE',
+};
 
 export default function Switch(props) {
-    const handleClick = (e) => {
-      props.onSwitchClick(e);
-    }
+  const handleClick = (e) => {
+    props.onSwitchClick(e);
+  };
 
-    const activeState = props.switchState,
-          isPauseDisabled = activeState !== SWITCH_STATES.ON;
+  const activeState = props.switchState,
+    isPauseDisabled = activeState !== SWITCH_STATES.ON;
 
-    return (
-      <div className="switch-container">
-        <div>Switch</div>
-        <SwitchButton name={SWITCH_STATES.ON} activeButtonName={activeState} onClick={handleClick}/>
-        <SwitchButton name={SWITCH_STATES.PAUSE} disabled={isPauseDisabled} activeButtonName={activeState} onClick={handleClick}/>
-        <SwitchButton name={SWITCH_STATES.OFF} activeButtonName={activeState} onClick={handleClick}/>
-      </div>
-    );
+  return (
+    <div className="switch-container">
+      <div>Switch</div>
+      <SwitchButton
+        name={SWITCH_STATES.ON}
+        activeButtonName={activeState}
+        onClick={handleClick}
+      />
+      <SwitchButton
+        name={SWITCH_STATES.PAUSE}
+        disabled={isPauseDisabled}
+        activeButtonName={activeState}
+        onClick={handleClick}
+      />
+      <SwitchButton
+        name={SWITCH_STATES.OFF}
+        activeButtonName={activeState}
+        onClick={handleClick}
+      />
+    </div>
+  );
 }
 
 Switch.propTypes = {
   switchState: PropTypes.oneOf(Object.values(SWITCH_STATES)).isRequired,
-  onSwitchClick: PropTypes.func.isRequired
-}
+  onSwitchClick: PropTypes.func.isRequired,
+};
 
 Switch.defaultProps = {
-  switchState: SWITCH_STATES.OFF
-}
+  switchState: SWITCH_STATES.OFF,
+};
