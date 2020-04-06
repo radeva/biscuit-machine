@@ -14,29 +14,13 @@ export default function Motor(props) {
   if (props.isOn) {
     containerCss += ' motor-on';
   }
-
-  let intervalOffset = 0,
-    lastIntervalStartDate = new Date();
-
+  
   const handlePulse = () => {
     if (props.isMachineMovementPaused) {
-      if (intervalOffset === 0) {
-        intervalOffset = new Date().getTime() - lastIntervalStartDate.getTime();
-      }
-
       return;
     }
 
-    if (intervalOffset > 0) {
-      setTimeout(() => {
-        lastIntervalStartDate = new Date();
-        props.onSendPulse();
-      }, intervalOffset);
-      intervalOffset = 0;
-    } else {
-      lastIntervalStartDate = new Date();
-      props.onSendPulse();
-    }
+    props.onSendPulse();
   };
 
   useInterval(
