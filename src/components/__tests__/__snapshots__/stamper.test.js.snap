@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders stamper correctly when machine is off 1`] = `
+exports[`Stamper should be rendered correctly when machine is off 1`] = `
 <div>
   <div
     class="stamper left"

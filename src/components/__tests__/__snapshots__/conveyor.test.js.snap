@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders conveyor correctly when off 1`] = `
+exports[`Conveyor should render correctly when off 1`] = `
 <div>
   <div
     class="conveyor"
@@ -12,13 +12,13 @@ exports[`renders conveyor correctly when off 1`] = `
 </div>
 `;
 
-exports[`renders conveyor correctly when on 1`] = `
+exports[`Conveyor should render correctly when on 1`] = `
 <div>
   <div
     class="conveyor"
   >
     <svg
-      class="sc-AxjAm eBcJJU"
+      class="sc-AxjAm jhTbDC"
     >
       conveyor.svg
     </svg>

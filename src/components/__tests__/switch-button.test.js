@@ -4,35 +4,40 @@ import { render, cleanup, fireEvent } from '@testing-library/react';
 
 afterEach(cleanup);
 
-it('renders button text correctly', () => {
-  const { getByText } = render(<SwitchButton name="ON" />);
-  let switchButton = getByText('ON');
-  expect(switchButton).toBeInTheDocument('ON');
-});
+describe('Switch button', () => {
+  it('should render button correctly', () => {
+    const handleClick = jest.fn();
+    const { getByText } = render(<SwitchButton name="ON" onClick={handleClick}/>);
+    let switchButton = getByText('ON');
+    expect(switchButton).toBeInTheDocument('ON');
+  });
 
-it('renders button active style correctly', () => {
-  const { getByText } = render(
-    <SwitchButton name="PAUSE" activeButtonName="PAUSE" />,
-  );
-  let switchButton = getByText('PAUSE');
-  expect(switchButton).toHaveClass('switch-button-active');
-});
+  it('should render active button correctly', () => {
+    const handleClick = jest.fn();
+    const { getByText } = render(
+      <SwitchButton name="PAUSE" activeButtonName="PAUSE" onClick={handleClick}/>,
+    );
+    let switchButton = getByText('PAUSE');
+    expect(switchButton).toHaveClass('switch-button-active');
+  });
 
-it('renders button non-active style correctly', () => {
-  const { getByText } = render(
-    <SwitchButton name="PAUSE" activeButtonName="ON" />,
-  );
-  let switchButton = getByText('PAUSE');
-  expect(switchButton).not.toHaveClass('switch-button-active');
-});
+  it('should render non-active button correctly', () => {
+    const handleClick = jest.fn();
+    const { getByText } = render(
+      <SwitchButton name="PAUSE" activeButtonName="ON" onClick={handleClick}/>,
+    );
+    let switchButton = getByText('PAUSE');
+    expect(switchButton).not.toHaveClass('switch-button-active');
+  });
 
-it('handles button click', () => {
-  const handleClick = jest.fn();
-  const { getByText } = render(
-    <SwitchButton name="PAUSE" onClick={handleClick} />,
-  );
-  let switchButton = getByText('PAUSE');
+  it('should handle button click', () => {
+    const handleClick = jest.fn();
+    const { getByText } = render(
+      <SwitchButton name="PAUSE" onClick={handleClick} />,
+    );
+    let switchButton = getByText('PAUSE');
 
-  fireEvent.click(switchButton);
-  expect(handleClick).toHaveBeenCalledTimes(1);
+    fireEvent.click(switchButton);
+    expect(handleClick).toHaveBeenCalledTimes(1);
+  });
 });
