@@ -50,8 +50,11 @@ export default function BiscuitMachine(props) {
         setBiscuitsBakedCount(biscuitsBakedCount + 1);
         nextState = 0b000; // switch OFF
         break;
+      case 0b010:
+        nextState = 0b001; // switch OFF, but there are biscuits on the conveyor
+        break;
       default:
-        console.error('Unexpected state');
+        console.error('Unexpected state: ' + machineState);
         break;
     }
 
