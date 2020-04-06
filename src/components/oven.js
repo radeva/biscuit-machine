@@ -41,6 +41,10 @@ export default function Oven(props) {
         temperature < OVEN_MAX_TEMPERATURE);
 
   const calculateTemperatureDown = () => {
+    if (temperature === OVEN_MIN_TEMPERATURE) {
+      props.handleOvenReady(false);
+    }
+
     setTemperature(temperature - HEAT_OVEN_STEP);
   };
 
