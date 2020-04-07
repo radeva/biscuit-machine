@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ReactComponent as MotorSVG } from './../images/motor.svg';
 import useInterval from 'react-useinterval';
 
-export const MOTOR_TIMEOUT = 4000;
+export const MOTOR_TIMEOUT = 2000;
 
 export default function Motor(props) {
   const [intervalOffset, setIntervalOffset] = useState(0),

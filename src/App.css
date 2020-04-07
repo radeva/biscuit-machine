@@ -51,7 +51,7 @@
   position: relative;
   top: 42px;
   left: -40px;
-  animation: bakedbiscuit 4s linear infinite;
+  animation: bakedbiscuit 2s linear infinite;
 }
 
 @keyframes bakedbiscuit {
@@ -89,7 +89,7 @@
 }
 
 .motor-on {
-  animation: motorrotation 4s linear infinite;
+  animation: motorrotation 2s linear infinite;
 }
 
 @keyframes motorrotation {
@@ -116,7 +116,7 @@
 /* Biscuit Animations */
 .biscuit-dough {
   position: relative;
-  animation: biscuitdough 4s linear infinite;
+  animation: biscuitdough 2s linear infinite;
 }
 
 @keyframes biscuitdough {
@@ -140,7 +140,7 @@
 }
 
 .stamper-pusher-on {
-  animation: stamperpusher 4s linear infinite;
+  animation: stamperpusher 2s linear infinite;
 }
 
 @keyframes stamperpusher {
@@ -162,7 +162,7 @@
   position: relative;
   top: 45px;
   left: -70px;
-  animation: rawbiscuit 4s linear infinite;
+  animation: rawbiscuit 2s linear infinite;
 }
 
 @keyframes rawbiscuit {
