@@ -175,7 +175,7 @@
   }
 }
 
-.animation-paused {
+.animation-paused, .animation-paused svg {
   animation-play-state: paused;
 }
 
