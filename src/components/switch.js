@@ -14,7 +14,7 @@ export default function Switch(props) {
   };
 
   const activeState = props.switchState,
-    isPauseDisabled = activeState !== SWITCH_STATES.ON;
+    isPauseDisabled = activeState !== SWITCH_STATES.ON || !props.isOvenReady;
 
   return (
     <div className="switch-container">
@@ -42,8 +42,10 @@ export default function Switch(props) {
 Switch.propTypes = {
   switchState: PropTypes.oneOf(Object.values(SWITCH_STATES)).isRequired,
   onSwitchClick: PropTypes.func.isRequired,
+  isOvenReady: PropTypes.bool
 };
 
 Switch.defaultProps = {
   switchState: SWITCH_STATES.OFF,
+  isOvenReady: false
 };

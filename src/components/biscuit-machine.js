@@ -113,7 +113,11 @@ export default function BiscuitMachine(props) {
           />
         </div>
         <div className="right">
-          <Switch onSwitchClick={handleSwitchClick} switchState={switchState} />
+          <Switch 
+            onSwitchClick={handleSwitchClick} 
+            switchState={switchState} 
+            isOvenReady={isOvenReady}
+          />
         </div>
       </div>
       <div className="biscuits-container">
