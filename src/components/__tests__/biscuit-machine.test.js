@@ -22,11 +22,9 @@ describe('Biscuit Machine', () => {
       jest.advanceTimersByTime(MOTOR_TIMEOUT);
     });
 
-    [
-      biscuitDough,
-      rawBiscuit,
-      biscuitInOven
-    ] = getBiscuitElements(queryByTestId);
+    [biscuitDough, rawBiscuit, biscuitInOven] = getBiscuitElements(
+      queryByTestId,
+    );
     expect(biscuitDough).toBeInTheDocument();
     expect(rawBiscuit).toBeNull();
     expect(biscuitInOven).toBeNull();
@@ -36,11 +34,9 @@ describe('Biscuit Machine', () => {
       jest.advanceTimersByTime(MOTOR_TIMEOUT);
     });
 
-    [
-      biscuitDough,
-      rawBiscuit,
-      biscuitInOven
-    ] = getBiscuitElements(queryByTestId);
+    [biscuitDough, rawBiscuit, biscuitInOven] = getBiscuitElements(
+      queryByTestId,
+    );
     expect(biscuitDough).toBeInTheDocument();
     expect(rawBiscuit).toBeInTheDocument();
     expect(biscuitInOven).toBeNull();
@@ -50,11 +46,9 @@ describe('Biscuit Machine', () => {
       jest.advanceTimersByTime(MOTOR_TIMEOUT);
     });
 
-    [
-      biscuitDough,
-      rawBiscuit,
-      biscuitInOven
-    ] = getBiscuitElements(queryByTestId);
+    [biscuitDough, rawBiscuit, biscuitInOven] = getBiscuitElements(
+      queryByTestId,
+    );
     expect(biscuitDough).toBeInTheDocument();
     expect(rawBiscuit).toBeInTheDocument();
     expect(biscuitInOven).toBeInTheDocument();
@@ -64,11 +58,9 @@ describe('Biscuit Machine', () => {
       jest.advanceTimersByTime(MOTOR_TIMEOUT);
     });
 
-    [
-      biscuitDough,
-      rawBiscuit,
-      biscuitInOven
-    ] = getBiscuitElements(queryByTestId);
+    [biscuitDough, rawBiscuit, biscuitInOven] = getBiscuitElements(
+      queryByTestId,
+    );
     expect(biscuitDough).toBeInTheDocument();
     expect(rawBiscuit).toBeInTheDocument();
     expect(biscuitInOven).toBeInTheDocument();
@@ -80,11 +72,9 @@ describe('Biscuit Machine', () => {
       jest.advanceTimersByTime(MOTOR_TIMEOUT);
     });
 
-    [
-      biscuitDough,
-      rawBiscuit,
-      biscuitInOven
-    ] = getBiscuitElements(queryByTestId);
+    [biscuitDough, rawBiscuit, biscuitInOven] = getBiscuitElements(
+      queryByTestId,
+    );
     expect(biscuitDough).toBeNull();
     expect(rawBiscuit).toBeInTheDocument();
     expect(biscuitInOven).toBeInTheDocument();
@@ -94,11 +84,9 @@ describe('Biscuit Machine', () => {
       jest.advanceTimersByTime(MOTOR_TIMEOUT);
     });
 
-    [
-      biscuitDough,
-      rawBiscuit,
-      biscuitInOven
-    ] = getBiscuitElements(queryByTestId);
+    [biscuitDough, rawBiscuit, biscuitInOven] = getBiscuitElements(
+      queryByTestId,
+    );
     expect(biscuitDough).toBeNull();
     expect(rawBiscuit).toBeNull();
     expect(biscuitInOven).toBeInTheDocument();
@@ -108,11 +96,67 @@ describe('Biscuit Machine', () => {
       jest.advanceTimersByTime(MOTOR_TIMEOUT);
     });
 
-    [
-      biscuitDough,
-      rawBiscuit,
-      biscuitInOven
-    ] = getBiscuitElements(queryByTestId);
+    [biscuitDough, rawBiscuit, biscuitInOven] = getBiscuitElements(
+      queryByTestId,
+    );
+    expect(biscuitDough).toBeNull();
+    expect(rawBiscuit).toBeNull();
+    expect(biscuitInOven).toBeNull();
+  });
+
+  it('should transition machine state correctly when turned off and just one biscuit preparation has started', () => {
+    const { getByText, queryByTestId } = render(<BiscuitMachine />);
+
+    const buttonOn = getByText('ON');
+    fireEvent.click(buttonOn);
+
+    // validate 100
+    act(() => {
+      jest.advanceTimersByTime(HEAT_OVEN_INTERVAL_IN_MSECONDS * 10 * 9); // go up to 220 C
+      jest.advanceTimersByTime(MOTOR_TIMEOUT);
+    });
+
+    [biscuitDough, rawBiscuit, biscuitInOven] = getBiscuitElements(
+      queryByTestId,
+    );
+    expect(biscuitDough).toBeInTheDocument();
+    expect(rawBiscuit).toBeNull();
+    expect(biscuitInOven).toBeNull();
+
+    // validate 010
+    act(() => {
+      const buttonOn = getByText('OFF');
+      fireEvent.click(buttonOn);
+      jest.advanceTimersByTime(MOTOR_TIMEOUT);
+    });
+
+    [biscuitDough, rawBiscuit, biscuitInOven] = getBiscuitElements(
+      queryByTestId,
+    );
+    expect(biscuitDough).toBeNull();
+    expect(rawBiscuit).toBeInTheDocument();
+    expect(biscuitInOven).toBeNull();
+
+    // validate 001
+    act(() => {
+      jest.advanceTimersByTime(MOTOR_TIMEOUT);
+    });
+
+    [biscuitDough, rawBiscuit, biscuitInOven] = getBiscuitElements(
+      queryByTestId,
+    );
+    expect(biscuitDough).toBeNull();
+    expect(rawBiscuit).toBeNull();
+    expect(biscuitInOven).toBeInTheDocument();
+
+    // validate 000
+    act(() => {
+      jest.advanceTimersByTime(MOTOR_TIMEOUT);
+    });
+
+    [biscuitDough, rawBiscuit, biscuitInOven] = getBiscuitElements(
+      queryByTestId,
+    );
     expect(biscuitDough).toBeNull();
     expect(rawBiscuit).toBeNull();
     expect(biscuitInOven).toBeNull();
@@ -129,11 +173,9 @@ describe('Biscuit Machine', () => {
       jest.advanceTimersByTime(MOTOR_TIMEOUT * 2); // move to 110
     });
 
-    [
-      biscuitDough,
-      rawBiscuit,
-      biscuitInOven
-    ] = getBiscuitElements(queryByTestId);
+    [biscuitDough, rawBiscuit, biscuitInOven] = getBiscuitElements(
+      queryByTestId,
+    );
     expect(biscuitDough).toBeInTheDocument();
     expect(rawBiscuit).toBeInTheDocument();
     expect(biscuitInOven).toBeNull();
@@ -147,11 +189,9 @@ describe('Biscuit Machine', () => {
     });
 
     // check that state doesn't change
-    [
-      biscuitDough,
-      rawBiscuit,
-      biscuitInOven
-    ] = getBiscuitElements(queryByTestId);
+    [biscuitDough, rawBiscuit, biscuitInOven] = getBiscuitElements(
+      queryByTestId,
+    );
     expect(biscuitDough).toBeInTheDocument();
     expect(rawBiscuit).toBeInTheDocument();
     expect(biscuitInOven).toBeNull();
