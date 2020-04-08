@@ -95,27 +95,29 @@ describe('Oven when machine is on', () => {
       newTemperatureRegExp,
     );
   });
-});
 
-it('should show correct temperature while warming up and after 220C is reached', () => {
-  const handleOvenReady = jest.fn();
-  const { getByTestId } = render(
-    <Oven switchState={SWITCH_STATES.ON} handleOvenReady={handleOvenReady} />,
-  );
+  it('should show correct temperature while warming up and after 220C is reached', () => {
+    const handleOvenReady = jest.fn();
+    const { getByTestId } = render(
+      <Oven switchState={SWITCH_STATES.ON} handleOvenReady={handleOvenReady} />,
+    );
 
-  act(() => {
-    jest.advanceTimersByTime(HEAT_OVEN_INTERVAL_IN_MSECONDS * 10 * 9); // go up to 220 C
-    jest.advanceTimersByTime(WARMUP_COOLDOWN_OVEN_INTERVAL_IN_MSECONDS * 5); // start warming up
+    act(() => {
+      jest.advanceTimersByTime(HEAT_OVEN_INTERVAL_IN_MSECONDS * 10 * 9); // go up to 220 C
+      jest.advanceTimersByTime(WARMUP_COOLDOWN_OVEN_INTERVAL_IN_MSECONDS * 5); // start warming up
+    });
+
+    expect(getByTestId('oven-temperature')).toHaveTextContent(230);
+
+    act(() => {
+      jest.advanceTimersByTime(WARMUP_COOLDOWN_OVEN_INTERVAL_IN_MSECONDS * 5); // go up to 240
+      jest.advanceTimersByTime(WARMUP_COOLDOWN_OVEN_INTERVAL_IN_MSECONDS); // start cooling down
+    });
+
+    expect(getByTestId('oven-temperature')).toHaveTextContent(238);
+    expect(handleOvenReady).toHaveBeenCalledTimes(1);
+    expect(handleOvenReady).toHaveBeenNthCalledWith(1, true);
   });
-
-  expect(getByTestId('oven-temperature')).toHaveTextContent(230);
-
-  act(() => {
-    jest.advanceTimersByTime(WARMUP_COOLDOWN_OVEN_INTERVAL_IN_MSECONDS * 5); // go up to 240
-    jest.advanceTimersByTime(WARMUP_COOLDOWN_OVEN_INTERVAL_IN_MSECONDS); // start cooling down
-  });
-
-  expect(getByTestId('oven-temperature')).toHaveTextContent(238);
 });
 
 describe('Oven when machine is paused', () => {
@@ -255,5 +257,21 @@ describe('Oven when the machine is turned off', () => {
     expect(getByTestId('oven-temperature')).toHaveTextContent(
       compareToTemperatureRegExp,
     );
+
+    act(() => {
+      rerender(
+        <Oven
+          switchState={SWITCH_STATES.OFF}
+          handleOvenReady={handleOvenReady}
+          hasBiscuitOnConveyor={false}
+        />,
+      );
+      jest.advanceTimersByTime(WARMUP_COOLDOWN_OVEN_INTERVAL_IN_MSECONDS * 3);
+      jest.advanceTimersByTime(HEAT_OVEN_INTERVAL_IN_MSECONDS);
+    });
+
+    expect(handleOvenReady).toHaveBeenCalledTimes(2);
+    expect(handleOvenReady).toHaveBeenNthCalledWith(1, true);
+    expect(handleOvenReady).toHaveBeenNthCalledWith(2, false);
   });
 });
