@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Baked Biscuits List should be rendered correctly 1`] = `
+<div>
+  <ul
+    class="biscuits-list"
+    data-testid="biscuits-list"
+  >
+    <li>
+      <svg>
+        baked-biscuit.svg
+      </svg>
+    </li>
+    <li>
+      <svg>
+        baked-biscuit.svg
+      </svg>
+    </li>
+    <li>
+      <svg>
+        baked-biscuit.svg
+      </svg>
+    </li>
+    <li>
+      <svg>
+        baked-biscuit.svg
+      </svg>
+    </li>
+    <li>
+      <svg>
+        baked-biscuit.svg
+      </svg>
+    </li>
+  </ul>
+</div>
+`;

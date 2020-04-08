@@ -8,7 +8,7 @@ afterEach(cleanup);
 
 jest.useFakeTimers();
 
-let biscuitDough, rawBiscuit, biscuitInOven, biscuitsList;
+let biscuitDough, rawBiscuit, biscuitInOven;
 describe('Biscuit Machine', () => {
   it('should transition machine state correctly when turned on and off', () => {
     const { getByText, queryByTestId } = render(<BiscuitMachine />);
@@ -25,13 +25,11 @@ describe('Biscuit Machine', () => {
     [
       biscuitDough,
       rawBiscuit,
-      biscuitInOven,
-      biscuitsList,
+      biscuitInOven
     ] = getBiscuitElements(queryByTestId);
     expect(biscuitDough).toBeInTheDocument();
     expect(rawBiscuit).toBeNull();
     expect(biscuitInOven).toBeNull();
-    expect(biscuitsList).not.toHaveTextContent(/baked-biscuit.svg/);
 
     // validate 110
     act(() => {
@@ -41,13 +39,11 @@ describe('Biscuit Machine', () => {
     [
       biscuitDough,
       rawBiscuit,
-      biscuitInOven,
-      biscuitsList,
+      biscuitInOven
     ] = getBiscuitElements(queryByTestId);
     expect(biscuitDough).toBeInTheDocument();
     expect(rawBiscuit).toBeInTheDocument();
     expect(biscuitInOven).toBeNull();
-    expect(biscuitsList).not.toHaveTextContent(/baked-biscuit.svg/);
 
     // validate 111
     act(() => {
@@ -57,13 +53,11 @@ describe('Biscuit Machine', () => {
     [
       biscuitDough,
       rawBiscuit,
-      biscuitInOven,
-      biscuitsList,
+      biscuitInOven
     ] = getBiscuitElements(queryByTestId);
     expect(biscuitDough).toBeInTheDocument();
     expect(rawBiscuit).toBeInTheDocument();
     expect(biscuitInOven).toBeInTheDocument();
-    expect(biscuitsList).not.toHaveTextContent(/baked-biscuit.svg/);
 
     // validate bakedBiscuits count, still 111
     act(() => {
@@ -73,13 +67,11 @@ describe('Biscuit Machine', () => {
     [
       biscuitDough,
       rawBiscuit,
-      biscuitInOven,
-      biscuitsList,
+      biscuitInOven
     ] = getBiscuitElements(queryByTestId);
     expect(biscuitDough).toBeInTheDocument();
     expect(rawBiscuit).toBeInTheDocument();
     expect(biscuitInOven).toBeInTheDocument();
-    expect(biscuitsList).toHaveTextContent(/baked-biscuit.svg/);
 
     // validate 011
     act(() => {
@@ -91,13 +83,11 @@ describe('Biscuit Machine', () => {
     [
       biscuitDough,
       rawBiscuit,
-      biscuitInOven,
-      biscuitsList,
+      biscuitInOven
     ] = getBiscuitElements(queryByTestId);
     expect(biscuitDough).toBeNull();
     expect(rawBiscuit).toBeInTheDocument();
     expect(biscuitInOven).toBeInTheDocument();
-    expect(biscuitsList).toHaveTextContent(/baked-biscuit.svg/);
 
     // validate 001
     act(() => {
@@ -107,13 +97,11 @@ describe('Biscuit Machine', () => {
     [
       biscuitDough,
       rawBiscuit,
-      biscuitInOven,
-      biscuitsList,
+      biscuitInOven
     ] = getBiscuitElements(queryByTestId);
     expect(biscuitDough).toBeNull();
     expect(rawBiscuit).toBeNull();
     expect(biscuitInOven).toBeInTheDocument();
-    expect(biscuitsList).toHaveTextContent(/baked-biscuit.svg/);
 
     // validate 000
     act(() => {
@@ -123,13 +111,11 @@ describe('Biscuit Machine', () => {
     [
       biscuitDough,
       rawBiscuit,
-      biscuitInOven,
-      biscuitsList,
+      biscuitInOven
     ] = getBiscuitElements(queryByTestId);
     expect(biscuitDough).toBeNull();
     expect(rawBiscuit).toBeNull();
     expect(biscuitInOven).toBeNull();
-    expect(biscuitsList).toHaveTextContent(/baked-biscuit.svg/);
   });
 
   it('should keep machine state as it is when paused', () => {
@@ -146,13 +132,11 @@ describe('Biscuit Machine', () => {
     [
       biscuitDough,
       rawBiscuit,
-      biscuitInOven,
-      biscuitsList,
+      biscuitInOven
     ] = getBiscuitElements(queryByTestId);
     expect(biscuitDough).toBeInTheDocument();
     expect(rawBiscuit).toBeInTheDocument();
     expect(biscuitInOven).toBeNull();
-    expect(biscuitsList).not.toHaveTextContent(/baked-biscuit.svg/);
 
     const buttonPause = getByText('PAUSE');
     fireEvent.click(buttonPause);
@@ -166,13 +150,11 @@ describe('Biscuit Machine', () => {
     [
       biscuitDough,
       rawBiscuit,
-      biscuitInOven,
-      biscuitsList,
+      biscuitInOven
     ] = getBiscuitElements(queryByTestId);
     expect(biscuitDough).toBeInTheDocument();
     expect(rawBiscuit).toBeInTheDocument();
     expect(biscuitInOven).toBeNull();
-    expect(biscuitsList).not.toHaveTextContent(/baked-biscuit.svg/);
   });
 });
 
@@ -180,7 +162,6 @@ function getBiscuitElements(queryByTestId) {
   let biscuitDough = queryByTestId('biscuit-dough-svg');
   let rawBiscuit = queryByTestId('raw-biscuit');
   let biscuitInOven = queryByTestId('biscuit-in-oven');
-  let biscuitsList = queryByTestId('biscuits-list');
 
-  return [biscuitDough, rawBiscuit, biscuitInOven, biscuitsList];
+  return [biscuitDough, rawBiscuit, biscuitInOven];
 }

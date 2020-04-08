@@ -5,16 +5,17 @@ import Conveyor from './conveyor';
 import Motor from './motor';
 import Extruder from './extruder';
 import Stamper from './stamper';
-import { ReactComponent as BakedBiscuitSVG } from './../images/baked-biscuit.svg';
+import BakedBiscuitsList from './baked-biscuits-list'
+
 
 // shouldPushNewBiscuit, hasBiscuitToStamp, hasBiscuitToBake
 const initialState = 0b000;
 
-export default function BiscuitMachine(props) {
+export default function BiscuitMachine() {
   const [machineState, setMachineState] = useState(initialState),
     [switchState, setSwitchState] = useState(SWITCH_STATES.OFF),
     [isOvenReady, setIsOvenReady] = useState(false),
-    [biscuitsBakedCount, setBiscuitsBakedCount] = useState(0);
+    [bakedBiscuitsCount, setBakedBiscuitsCount] = useState(0);
 
   const shouldPushNewBiscuit = (machineState & 0b100) > 0,
     hasBiscuitToStamp = (machineState & 0b010) > 0,
@@ -37,17 +38,17 @@ export default function BiscuitMachine(props) {
         nextState = switchState === SWITCH_STATES.ON ? 0b111 : 0b011;
         break;
       case 0b111:
-        setBiscuitsBakedCount(biscuitsBakedCount + 1);
+        setBakedBiscuitsCount(bakedBiscuitsCount + 1);
         if (switchState === SWITCH_STATES.OFF) {
           nextState = 0b011;
         }
         break;
       case 0b011:
-        setBiscuitsBakedCount(biscuitsBakedCount + 1);
+        setBakedBiscuitsCount(bakedBiscuitsCount + 1);
         nextState = 0b001; // switch OFF
         break;
       case 0b001:
-        setBiscuitsBakedCount(biscuitsBakedCount + 1);
+        setBakedBiscuitsCount(bakedBiscuitsCount + 1);
         nextState = 0b000; // switch OFF
         break;
       case 0b010:
@@ -73,15 +74,6 @@ export default function BiscuitMachine(props) {
     (switchState === SWITCH_STATES.OFF && hasBiscuitOnConveyor);
 
   const isMachineMovementPaused = switchState === SWITCH_STATES.PAUSE;
-
-  const bakedBiscuits = [];
-  for (let i = 0; i < biscuitsBakedCount; i++) {
-    bakedBiscuits.push(
-      <li key={i}>
-        <BakedBiscuitSVG />
-      </li>,
-    );
-  }
 
   return (
     <div className="container">
@@ -121,10 +113,8 @@ export default function BiscuitMachine(props) {
         </div>
       </div>
       <div className="biscuits-container">
-        <h2>Bucket with Biscuits ({biscuitsBakedCount})</h2>
-        <ul className="biscuits-list" data-testid="biscuits-list">
-          {bakedBiscuits}
-        </ul>
+        <h2>Bucket with Biscuits ({bakedBiscuitsCount})</h2>
+        <BakedBiscuitsList bakedBiscuitsCount={bakedBiscuitsCount} />
       </div>
     </div>
   );
