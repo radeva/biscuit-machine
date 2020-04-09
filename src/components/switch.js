@@ -18,7 +18,6 @@ export default function Switch(props) {
 
   return (
     <div className="switch-container">
-      <div>Switch</div>
       <SwitchButton
         name={SWITCH_STATES.ON}
         activeButtonName={activeState}
