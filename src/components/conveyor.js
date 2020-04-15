@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ReactComponent as ConveyorSVG } from './conveyor.svg';
+import { ReactComponent as ConveyorSVG } from '../images/conveyor.svg';
 import styled from 'styled-components';
 
 const ConveyorSVGOn = styled(ConveyorSVG)`
