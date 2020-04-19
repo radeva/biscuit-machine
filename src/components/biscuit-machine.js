@@ -3,10 +3,10 @@ import Switch, { SWITCH_STATES } from './switch';
 import Oven from './oven';
 import Conveyor from './conveyor';
 import Motor from './motor';
+import Biscuit from './biscuit';
 import Extruder from './extruder';
 import Stamper from './stamper';
-import BakedBiscuitsList from './baked-biscuits-list'
-
+import BakedBiscuitsList from './baked-biscuits-list';
 
 // shouldPushNewBiscuit, hasBiscuitToStamp, hasBiscuitToBake
 const initialState = 0b000;
@@ -78,11 +78,15 @@ export default function BiscuitMachine() {
   return (
     <div className="container">
       <h1>BISCUIT MACHINE</h1>
+
       <div>
-        <Extruder
+        <Biscuit
           shouldPushNewBiscuit={shouldPushNewBiscuit}
+          hasBiscuitToStamp={hasBiscuitToStamp}
+          hasBiscuitToBake={hasBiscuitToBake}
           isMachineMovementPaused={isMachineMovementPaused}
         />
+        <Extruder />
         <Stamper
           hasBiscuitToStamp={hasBiscuitToStamp}
           isMachineMovementOn={isMachineMovementOn}
@@ -105,9 +109,9 @@ export default function BiscuitMachine() {
           />
         </div>
         <div className="right">
-          <Switch 
-            onSwitchClick={handleSwitchClick} 
-            switchState={switchState} 
+          <Switch
+            onSwitchClick={handleSwitchClick}
+            switchState={switchState}
             isOvenReady={isOvenReady}
           />
         </div>

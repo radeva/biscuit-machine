@@ -48,9 +48,9 @@
 }
 
 .baked-biscuit {
-  position: relative;
-  top: 42px;
-  left: -40px;
+  position: absolute;
+  top: 29px;
+  left: 326px;
   animation: bakedbiscuit 2s linear infinite;
 }
 
@@ -117,7 +117,7 @@
 }
 /* Biscuit Animations */
 .biscuit-dough {
-  position: relative;
+  position: absolute;
   animation: biscuitdough 2s linear infinite;
 }
 
@@ -126,10 +126,10 @@
     transform: translate(0, 0);
   }
   40% {
-    transform: translate(0, 17px);
+    transform: translate(0, 24px);
   }
   100% {
-    transform: translate(78px, 17px);
+    transform: translate(78px, 24px);
   }
 }
 
@@ -161,9 +161,9 @@
 }
 
 .raw-biscuit {
-  position: relative;
-  top: 45px;
-  left: -70px;
+  position: absolute;
+  top: 29px;
+  left: 46px;
   animation: rawbiscuit 2s linear infinite;
 }
 
@@ -172,12 +172,21 @@
     transform: translate(0, 0);
   }
   100% {
-    transform: translate(230px, 0);
+    transform: translate(280px, 0);
   }
 }
 
 .animation-paused, .animation-paused svg {
   animation-play-state: paused;
+}
+
+/* Biscuit */
+.biscuit-container {
+  position: absolute;
+  float: left;
+  clear:both;
+  margin-top: 76px;
+  margin-left: 61px;
 }
 
 /* Other */

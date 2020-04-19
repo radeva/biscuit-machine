@@ -5,12 +5,9 @@ exports[`Extruder should render correctly 1`] = `
   <div
     class="extruder left"
   >
-    <div>
-      <svg>
-        extruder.svg
-      </svg>
-    </div>
-    
+    <svg>
+      extruder.svg
+    </svg>
   </div>
 </div>
 `;

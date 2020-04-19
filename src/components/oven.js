@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import useInterval from 'react-useinterval';
 import { SWITCH_STATES } from './switch';
-import { ReactComponent as BakedBiscuitSVG } from './../images/baked-biscuit.svg';
 
 export const OVEN_MIN_TEMPERATURE = 220,
   OVEN_MAX_TEMPERATURE = 240,
@@ -89,20 +88,6 @@ export default function Oven(props) {
     ovenLightClassName += ' ' + ovenLightClassName + '-on';
   }
 
-  let biscuitElement = '',
-    animationPausedClass = '';
-  if (props.switchState === SWITCH_STATES.PAUSE) {
-    animationPausedClass = 'animation-paused';
-  }
-  if (props.hasBiscuitToBake) {
-    biscuitElement = (
-      <BakedBiscuitSVG
-        data-testid="biscuit-in-oven"
-        className={'baked-biscuit ' + animationPausedClass}
-      />
-    );
-  }
-
   return (
     <div className="oven right">
       <label>GORENJE</label>
@@ -114,7 +99,6 @@ export default function Oven(props) {
         {temperature}
         <span>&#8451;</span>
       </label>
-      <div>{biscuitElement}</div>
     </div>
   );
 }
