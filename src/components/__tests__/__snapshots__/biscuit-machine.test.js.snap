@@ -1,0 +1,255 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Biscuit Machine should keep machine state as it is when paused 1`] = `
+<div>
+  <div
+    class="container"
+  >
+    <h1>
+      BISCUIT MACHINE
+    </h1>
+    <div>
+      <div
+        class="biscuit-container"
+      />
+      <div
+        class="extruder left"
+      >
+        <svg>
+          extruder.svg
+        </svg>
+      </div>
+      <div
+        class="stamper left"
+      >
+        <svg>
+          stamper.svg
+        </svg>
+        <svg
+          class="stamper-pusher stamper-pusher-on "
+          data-testid="stamper-pusher"
+        >
+          stamper-pusher.svg
+        </svg>
+        
+      </div>
+      <div
+        class="oven right"
+      >
+        <label>
+          GORENJE
+        </label>
+        <span
+          class="oven-light oven-light-on"
+          data-testid="oven-light"
+        >
+          •
+        </span>
+        <br />
+        <label
+          data-testid="oven-temperature"
+        >
+          228
+          <span>
+            ℃
+          </span>
+        </label>
+      </div>
+    </div>
+    <div
+      class="conveyor"
+    >
+      <svg
+        class="sc-AxjAm jhTbDC"
+      >
+        conveyor.svg
+      </svg>
+    </div>
+    <div>
+      <div
+        class="left"
+      >
+        <div
+          class="motor motor-on"
+          data-testid="motor-container"
+        >
+          <svg
+            class="motor-svg"
+          >
+            motor.svg
+          </svg>
+        </div>
+      </div>
+      <div
+        class="right"
+      >
+        <div
+          class="switch-container"
+        >
+          <button
+            class="switch-button switch-button-active"
+          >
+            ON
+          </button>
+          <button
+            class="switch-button"
+          >
+            PAUSE
+          </button>
+          <button
+            class="switch-button"
+          >
+            OFF
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="biscuits-container"
+    >
+      <h2>
+        Bucket with Biscuits (
+        0
+        )
+      </h2>
+      <ul
+        class="biscuits-list"
+        data-testid="biscuits-list"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Biscuit Machine should keep machine state as it is when paused 2`] = `
+<div>
+  <div
+    class="container"
+  >
+    <h1>
+      BISCUIT MACHINE
+    </h1>
+    <div>
+      <div
+        class="biscuit-container"
+      >
+        <svg
+          class="biscuit-dough animation-paused"
+          data-testid="biscuit-dough-svg"
+        >
+          biscuit-dough.svg
+        </svg>
+        <svg
+          class="raw-biscuit animation-paused"
+          data-testid="raw-biscuit"
+        >
+          raw-biscuit.svg
+        </svg>
+      </div>
+      <div
+        class="extruder left"
+      >
+        <svg>
+          extruder.svg
+        </svg>
+      </div>
+      <div
+        class="stamper left"
+      >
+        <svg>
+          stamper.svg
+        </svg>
+        <svg
+          class="stamper-pusher stamper-pusher-on animation-paused"
+          data-testid="stamper-pusher"
+        >
+          stamper-pusher.svg
+        </svg>
+        
+      </div>
+      <div
+        class="oven right"
+      >
+        <label>
+          GORENJE
+        </label>
+        <span
+          class="oven-light oven-light-on"
+          data-testid="oven-light"
+        >
+          •
+        </span>
+        <br />
+        <label
+          data-testid="oven-temperature"
+        >
+          232
+          <span>
+            ℃
+          </span>
+        </label>
+      </div>
+    </div>
+    <div
+      class="conveyor"
+    >
+      <svg>
+        conveyor.svg
+      </svg>
+    </div>
+    <div>
+      <div
+        class="left"
+      >
+        <div
+          class="motor motor-on animation-paused"
+          data-testid="motor-container"
+        >
+          <svg
+            class="motor-svg"
+          >
+            motor.svg
+          </svg>
+        </div>
+      </div>
+      <div
+        class="right"
+      >
+        <div
+          class="switch-container"
+        >
+          <button
+            class="switch-button"
+          >
+            ON
+          </button>
+          <button
+            class="switch-button switch-button-active"
+            disabled=""
+          >
+            PAUSE
+          </button>
+          <button
+            class="switch-button"
+          >
+            OFF
+          </button>
+        </div>
+      </div>
+    </div>
+    <div
+      class="biscuits-container"
+    >
+      <h2>
+        Bucket with Biscuits (
+        0
+        )
+      </h2>
+      <ul
+        class="biscuits-list"
+        data-testid="biscuits-list"
+      />
+    </div>
+  </div>
+</div>
+`;

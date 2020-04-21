@@ -7,59 +7,30 @@ import Biscuit from './biscuit';
 import Extruder from './extruder';
 import Stamper from './stamper';
 import BakedBiscuitsList from './baked-biscuits-list';
+import BiscuitMachineManager from '../managers/biscuit-machine-manager';
 
-// shouldPushNewBiscuit, hasBiscuitToStamp, hasBiscuitToBake
-const initialState = 0b000;
+const biscuitMachineManager = new BiscuitMachineManager();
 
 export default function BiscuitMachine() {
-  const [machineState, setMachineState] = useState(initialState),
+  const [, setMachineState] = useState(0b000),
     [switchState, setSwitchState] = useState(SWITCH_STATES.OFF),
     [isOvenReady, setIsOvenReady] = useState(false),
     [bakedBiscuitsCount, setBakedBiscuitsCount] = useState(0);
 
-  const shouldPushNewBiscuit = (machineState & 0b100) > 0,
-    hasBiscuitToStamp = (machineState & 0b010) > 0,
-    hasBiscuitToBake = (machineState & 0b001) > 0;
+  const shouldPushNewBiscuit = biscuitMachineManager.shouldPushNewBiscuit();
+  const hasBiscuitToStamp = biscuitMachineManager.hasBiscuitToStamp();
+  const hasBiscuitToBake = biscuitMachineManager.hasBiscuitToBake();
 
   const handleSwitchClick = (switchState) => {
     setSwitchState(switchState);
   };
 
   const handleMotorPulse = () => {
-    let nextState = machineState;
-    switch (machineState) {
-      case 0b000:
-        nextState = switchState === SWITCH_STATES.ON ? 0b100 : 0b000;
-        break;
-      case 0b100:
-        nextState = switchState === SWITCH_STATES.ON ? 0b110 : 0b010;
-        break;
-      case 0b110:
-        nextState = switchState === SWITCH_STATES.ON ? 0b111 : 0b011;
-        break;
-      case 0b111:
-        setBakedBiscuitsCount(bakedBiscuitsCount + 1);
-        if (switchState === SWITCH_STATES.OFF) {
-          nextState = 0b011;
-        }
-        break;
-      case 0b011:
-        setBakedBiscuitsCount(bakedBiscuitsCount + 1);
-        nextState = 0b001; // switch OFF
-        break;
-      case 0b001:
-        setBakedBiscuitsCount(bakedBiscuitsCount + 1);
-        nextState = 0b000; // switch OFF
-        break;
-      case 0b010:
-        nextState = 0b001; // switch OFF, but there are biscuits on the conveyor
-        break;
-      default:
-        console.error('Unexpected state: ' + machineState);
-        break;
+    biscuitMachineManager.updateMachineState(switchState);
+    setMachineState(biscuitMachineManager.getMachineState());
+    if (biscuitMachineManager.shouldUpdateBakedBiscuitsCount()) {
+      setBakedBiscuitsCount(bakedBiscuitsCount + 1);
     }
-
-    setMachineState(nextState);
   };
 
   const handleOvenReady = (isReady) => {
