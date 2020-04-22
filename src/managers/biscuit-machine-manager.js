@@ -3,7 +3,6 @@ import { SWITCH_STATES } from '../components/switch';
 export default class BiscuitMachineManager {
   constructor(state) {
     this.machineState = state ?? 0b000;
-    console.log(this.machineState);
   }
 
   getMachineState() {
@@ -41,7 +40,6 @@ export default class BiscuitMachineManager {
         break;
     }
 
-    console.log(nextState);
     this.machineState = nextState;
   }
 
@@ -50,7 +48,6 @@ export default class BiscuitMachineManager {
   }
 
   shouldPushNewBiscuit() {
-    console.log((this.machineState & 0b100) > 0);
     return (this.machineState & 0b100) > 0;
   }
 
