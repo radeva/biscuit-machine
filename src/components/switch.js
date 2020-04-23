@@ -1,12 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SwitchButton from './switch-button';
-
-export const SWITCH_STATES = {
-  ON: 'ON',
-  OFF: 'OFF',
-  PAUSE: 'PAUSE',
-};
+import { SWITCH_STATES } from '../constants';
 
 export default function Switch(props) {
   const handleClick = (e) => {

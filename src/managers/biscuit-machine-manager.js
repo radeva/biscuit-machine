@@ -1,4 +1,4 @@
-import { SWITCH_STATES } from '../components/switch';
+import { SWITCH_STATES } from '../constants';
 
 export default class BiscuitMachineManager {
   constructor(state) {

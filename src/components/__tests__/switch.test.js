@@ -1,5 +1,6 @@
 import React from 'react';
-import Switch, { SWITCH_STATES } from '../switch';
+import { SWITCH_STATES } from '../../constants';
+import Switch from '../switch';
 import { render, cleanup, fireEvent } from '@testing-library/react';
 
 afterEach(cleanup);

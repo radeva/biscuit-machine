@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Switch, { SWITCH_STATES } from './switch';
+import { SWITCH_STATES } from '../constants';
+import Switch from './switch';
 import Oven from './oven';
 import Conveyor from './conveyor';
 import Motor from './motor';

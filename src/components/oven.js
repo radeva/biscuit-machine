@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import useInterval from 'react-useinterval';
-import { SWITCH_STATES } from './switch';
+import { SWITCH_STATES } from '../constants';
 
 export const OVEN_MIN_TEMPERATURE = 220,
   OVEN_MAX_TEMPERATURE = 240,

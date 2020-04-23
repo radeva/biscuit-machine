@@ -11,7 +11,20 @@ exports[`Biscuit Machine should keep machine state as it is when paused 1`] = `
     <div>
       <div
         class="biscuit-container"
-      />
+      >
+        <svg
+          class="biscuit-dough "
+          data-testid="biscuit-dough-svg"
+        >
+          biscuit-dough.svg
+        </svg>
+        <svg
+          class="raw-biscuit "
+          data-testid="raw-biscuit"
+        >
+          raw-biscuit.svg
+        </svg>
+      </div>
       <div
         class="extruder left"
       >

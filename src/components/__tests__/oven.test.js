@@ -5,7 +5,7 @@ import Oven, {
   HEAT_OVEN_INTERVAL_IN_MSECONDS,
   WARMUP_COOLDOWN_OVEN_INTERVAL_IN_MSECONDS,
 } from '../oven';
-import { SWITCH_STATES } from '../switch';
+import { SWITCH_STATES } from '../../constants';
 import { render, cleanup } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 

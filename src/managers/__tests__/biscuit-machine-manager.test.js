@@ -1,5 +1,6 @@
-import { SWITCH_STATES } from '../../components/switch';
+import { SWITCH_STATES } from '../../constants';
 import BiscuitMachineManager from '../biscuit-machine-manager';
+
 
 describe('Biscuit Machine Manager', () => {
   it('should transition state correctly when machine is turned on', () => {
