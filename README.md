@@ -1,4 +1,4 @@
-# biscuit-machine
+# Biscuit Machine
 
 This is a sample project I was tasked with when I applied for an engineering position at a company. The project required from me to learn React from scratch since I didn't have any React experience before that.
 
@@ -6,7 +6,7 @@ This is a sample project I was tasked with when I applied for an engineering pos
 
 Design a system to control a Biscuit Machine where biscuits should start baking process once the oven reaches certain degrees. On the other hand it shouldn't overheat and should maintain temperature between 220 and 240 degrees.
 
-There is an option to pause the baking process and to turn it off. When turned off, the machine should complete the baking of the baking already on the baking belt and then turn off.
+There is an option to pause the baking process or to turn it off. When turned off, the machine should complete the biscuits already on the baking belt and then turn off.
 
 ## The Solution
 
